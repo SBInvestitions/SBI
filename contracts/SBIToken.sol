@@ -18,8 +18,8 @@ contract SBIToken is Owned, CrowdsaleParameters {
 
     /* This generates a public event on the blockchain that will notify clients */
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+    event Transfer(address indexed from, address indexed to, uint256 tokens);
+    event Approval(address indexed tokenOwner, address indexed spender, uint256 tokens);
     event Issuance(uint256 _amount); // triggered when the total supply is increased
     event Destruction(uint256 _amount); // triggered when the total supply is decreased
 
@@ -27,7 +27,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
 
     /* Miscellaneous */
 
-    uint256 public totalSupply = 0; // 32700000;
+    uint256 public totalSupply = 0; // 40000000;
     bool public transfersEnabled = true;
 
     /**

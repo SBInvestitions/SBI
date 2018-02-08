@@ -15,6 +15,8 @@ contract('SBIToken', function (accounts) {
   let userAddress1;
   let userAddress2;
   let userAddress3;
+  let userAddress4;
+  let userAddress5;
   let generalSaleStartDate;
   let generalSaleEndDate;
 
@@ -32,6 +34,8 @@ contract('SBIToken', function (accounts) {
       userAddress1 = accounts[6];
       userAddress2 = accounts[7];
       userAddress3 = accounts[8];
+      userAddress4 = accounts[7];
+      userAddress5 = accounts[10];
       generalSaleStartDate = (await sut.generalSaleStartDate()).toNumber();
       generalSaleEndDate = (await sut.generalSaleEndDate()).toNumber();
     });
@@ -58,291 +62,105 @@ contract('SBIToken', function (accounts) {
       const userAddress1Balance = await sut.balanceOf(userAddress1);
       const userAddress2Balance = await sut.balanceOf(userAddress2);
       const userAddress3Balance = await sut.balanceOf(userAddress3);
+      const userAddress4Balance = await sut.balanceOf(userAddress4);
+      const userAddress5Balance = await sut.balanceOf(userAddress5);
 
-      assert.equal(22800000, generalSaleAddressBalance.valueOf(), 'Wallet generalSaleAddress is wrong');
-      assert.equal(2000000, bountyAddressBalance.valueOf(), 'Wallet bountyAddress is wrong');
-      assert.equal(3200000, partnersAddressBalance.valueOf(), 'Wallet partnersAddress is wrong');
-      assert.equal(12000000, teamAddressBalance.valueOf(), 'Wallet teamAddress is wrong');
+      assert.equal(22800000 * 1e18, generalSaleAddressBalance.valueOf(), 'Wallet generalSaleAddress is wrong');
+      assert.equal(2000000 * 1e18, bountyAddressBalance.valueOf(), 'Wallet bountyAddress is wrong');
+      assert.equal(3200000 * 1e18, partnersAddressBalance.valueOf(), 'Wallet partnersAddress is wrong');
+      assert.equal(12000000 * 1e18, teamAddressBalance.valueOf(), 'Wallet teamAddress is wrong');
       assert.equal(0, featureDevelopmentAddressBalance.valueOf(), 'Wallet featureDevelopmentAddress is wrong');
       assert.equal(0, userAddress1Balance.valueOf(), 'Wallet userAddress1 is wrong');
       assert.equal(0, userAddress2Balance.valueOf(), 'Wallet userAddress2 balance is wrong');
       assert.equal(0, userAddress3Balance.valueOf(), 'Wallet userAddress3 balance is wrong');
+      assert.equal(0, userAddress4Balance.valueOf(), 'Wallet userAddress2 balance is wrong');
+      assert.equal(0, userAddress5Balance.valueOf(), 'Wallet userAddress3 balance is wrong');
     });
 
     //#### 3. Setting stage periods.
     it('3. Tokens can be transferred from all wallets to customer wallets', async () => {
       // Contract deployed and general parameters initialization called. Mint function called.
       // Allocation owner requests transfer from allocation wallet to their address
-      await prepareTrasnfer(true);
+      await prepareTrasnfer(
+        [userAddress1, userAddress2, userAddress3, userAddress4, userAddress5],
+        [generalSaleAddress, bountyAddress, partnersAddress, teamAddress, featureDevelopmentAddress],
+      )
     });
 
-    it('4. Transferred tokens vest as appropriate by the end of ICO', async () => {
-      // Verify that
-      //   1. Vested balance changes after vesting
-      //   2. Vested balance can be transferred after vesting
-
-      const recipient = accounts[17]; // Yet unused
-
-      // First transfer
-      // await prepareTrasnfer(false);
-      // await setTestRPCTime(generalSaleEndDate + 3600);
-
-      const senders = [
-        generalSaleAddress, communityReserveAddress, teamAddress, advisorsAddress, bountyAddress, administrativeAddress,
-      ];
-
-      let newTransfer1 = {
-        to: recipient,
-        value: new BigNumber(350e24),
-      };
-      let newTransfer2 = {
-        to: recipient,
-        value: new BigNumber(450e24),
-      };
-      let newTransfer3 = {
-        to: recipient,
-        value: new BigNumber(170e24),
-      };
-      let newTransfer4 = {
-        to: recipient,
-        value: new BigNumber(24e23),
-      };
-      let newTransfer5 = {
-        to: recipient,
-        value: new BigNumber(176e23),
-      };
-      let newTransfer6 = {
-        to: recipient,
-        value: new BigNumber(10e24),
-      };
-      const transfers = [newTransfer1, newTransfer2, newTransfer3, newTransfer4, newTransfer5, newTransfer6];
-
-      const initialSenderBalances = [];
-      const vestedSenderBalances = [];
-      const finalSenderBalances = [];
-      const senderDiff = [];
-
-      const initialRecipientBalance = new BigNumber(await sut.balanceOf(recipient));
-
-      for (let i = 0; i < 6; i += 1) {
-        initialSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
-        vestedSenderBalances.push(new BigNumber(await sut.vestedBalanceOf(senders[i])));
-        await sut.transfer(...Object.values(transfers[i]), {from: senders[i]});
-      }
-
-      const finalRecipientBalance =  new BigNumber(await sut.balanceOf(recipient));
-      const recipientDiff = finalRecipientBalance.sub(initialRecipientBalance);
-
-      let expectedRecipientDiff = new BigNumber(0);
-
-      for (let i = 0; i < 6; i += 1) {
-        finalSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
-        senderDiff.push(initialSenderBalances[i].sub(finalSenderBalances[i]));
-        if (i !== 0 && i !== 2) {
-          expectedRecipientDiff = expectedRecipientDiff.plus(transfers[i].value);
-        }
-      }
-
-      for (let i = 0; i < 6; i += 1) {
-        if (i !== 0 && i !== 2) {
-          senderDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
-          vestedSenderBalances[i].should.be.bignumber.equal(transfers[i].value, 'User' +  i + ' vested balance');
-        } else {
-          senderDiff[i].should.be.bignumber.equal(new BigNumber(0), 'Wallet' +  i + ' balance decreased by transfer value');
-          vestedSenderBalances[i].should.be.bignumber.equal(new BigNumber(0), 'User' +  i + ' vested balance');
-        }
-      }
-      recipientDiff.should.be.bignumber.equal(expectedRecipientDiff, 'Recipient balance increased by sum of transfer values');
-    });
-
-    it('5. Transferred tokens do not vest above vesting percentage at the end of ICO (Negative transfer scenario.)', async () => {
-      await negativeVestingTest(generalSaleAddress);
-    });
-
-    it('6. Transferred tokens vest as appropriate 6 month after the end of ICO', async () => {
-      await setTestRPCTime(generalSaleEndDate + 3600 * 24 * (30.4375 * 6) + 3600 * 24);
-      await positiveVestingTest(generalSaleAddress);
-    });
-
-    it('7. Transferred tokens do not vest as appropriate at the end of ICO + 2 years (Negative transfer scenario.)', async () => {
-      await negativeVestingTest(teamAddress);
-    });
-
-    it('8. Transferred tokens vest as appropriate 2 years after the end of ICO', async () => {
-      await setTestRPCTime(generalSaleEndDate + 3600 * 24 * (30.4375 * 6) * 4 + 3600 * 24);
-      await positiveVestingTest(teamAddress);
-    });
-
-    it('9. ERC20 Comliance Tests - Transfer generates correct Transfer event', async () => {
+    it('4. ERC20 Comliance Tests - Transfer generates correct Transfer event', async () => {
       // Set watcher to Transfer event that we are looking for
-      const watcher = sut.Transfer();
+      await checkTransferEvents(accounts[1], accounts[7]);
 
-      const sender1 = communityReserveAddress;
-      const recipient1 = accounts[17];
-      const transfer1 = {
-        to: recipient1,
-        value: 1
-      };
 
-      await sut.transfer(...Object.values(transfer1), {from: sender1});
-      const output = watcher.get();
-
-      const eventArguments = output[0].args;
-      const argCount = Object.keys(eventArguments).length;
-      const arg1Name = Object.keys(eventArguments)[0];
-      const arg1Value = eventArguments[arg1Name];
-      const arg2Name = Object.keys(eventArguments)[1];
-      const arg2Value = eventArguments[arg2Name];
-      const arg3Name = Object.keys(eventArguments)[2];
-      const arg3Value = eventArguments[arg3Name];
-
-      argCount.should.be.equal(3, 'Transfer event number of arguments');
-      arg1Name.should.be.equal('from', 'Transfer event first argument name');
-      arg1Value.should.be.equal(sender1, 'Transfer event from address');
-      arg2Name.should.be.equal('to', 'Transfer event second argument name');
-      arg2Value.should.be.equal(recipient1, 'Transfer event to address');
-      arg3Name.should.be.equal('tokens', 'Transfer event third argument name');
-      arg3Value.should.be.bignumber.equal(transfer1.value, 'Transfer event value');
     });
 
-    it('10. ERC20 Comliance Tests - Allocate + TransferFrom generates correct Approval and Transfer event', async () => {
+    it('5. ERC20 Comliance Tests - Allocate + TransferFrom generates correct Approval and Transfer event', async () => {
       // Set watcher to Transfer event that we are looking for
-      var watcher = sut.Transfer();
-      var approvalWatcher = sut.Approval();
-
-      const sender = communityReserveAddress;
-      const owner = bountyAddress;
-      const recipient = accounts[17];
-
-      // Approve parameters
-      const approve = {
-        spender: sender,
-        value: 100
-      };
-
-      // TransferFrom parameters
-      const transfer = {
-        from: owner,
-        to: recipient,
-        value: 100
-      };
-
-      await sut.approve(...Object.values(approve), {from: owner});
-      const approvalOutput = approvalWatcher.get();
-
-      // Verify number of Approval event arguments, their names, and content
-      let eventArguments = approvalOutput[0].args;
-      const arg0Count = Object.keys(eventArguments).length;
-      const arg01Name = Object.keys(eventArguments)[0];
-      const arg01Value = eventArguments[arg01Name];
-      const arg02Name = Object.keys(eventArguments)[1];
-      const arg02Value = eventArguments[arg02Name];
-      const arg03Name = Object.keys(eventArguments)[2];
-      const arg03Value = eventArguments[arg03Name];
-
-      arg0Count.should.be.equal(3, 'Approval event number of arguments');
-      arg01Name.should.be.equal('tokenOwner', 'Transfer event first argument name');
-      arg01Value.should.be.equal(owner, 'Transfer event from address');
-      arg02Name.should.be.equal('spender', 'Transfer event second argument name');
-      arg02Value.should.be.equal(sender, 'Transfer event to address');
-      arg03Name.should.be.equal('tokens', 'Transfer event third argument name');
-      arg03Value.should.be.bignumber.equal(transfer.value, 'Transfer event value');
-
-
-      await sut.transferFrom(...Object.values(transfer), {from: sender});
-      const output = watcher.get();
-
-      // Verify number of Transfer event arguments, their names, and content
-      eventArguments = output[0].args;
-      const argCount = Object.keys(eventArguments).length;
-      const arg1Name = Object.keys(eventArguments)[0];
-      const arg1Value = eventArguments[arg1Name];
-      const arg2Name = Object.keys(eventArguments)[1];
-      const arg2Value = eventArguments[arg2Name];
-      const arg3Name = Object.keys(eventArguments)[2];
-      const arg3Value = eventArguments[arg3Name];
-
-      argCount.should.be.equal(3, 'Transfer event number of arguments');
-      arg1Name.should.be.equal('from', 'Transfer event first argument name');
-      arg1Value.should.be.equal(owner, 'Transfer event from address');
-      arg2Name.should.be.equal('to', 'Transfer event second argument name');
-      arg2Value.should.be.equal(recipient, 'Transfer event to address');
-      arg3Name.should.be.equal('tokens', 'Transfer event third argument name');
-      arg3Value.should.be.bignumber.equal(transfer.value, 'Transfer event value');
+      await checkTransferFromAndApprovalEvents(accounts[1], accounts[2], accounts[7]);
     });
 
-    it('11. ERC20 Comliance Tests - totalSupply', async () => {
+    it('6. ERC20 Comliance Tests - totalSupply', async () => {
       var totalSupply = new BigNumber(await sut.totalSupply());
-      totalSupply.should.be.bignumber.equal(1e27, 'Token total supply');
+      totalSupply.should.be.bignumber.equal(40000000 * 1e18, 'Token total supply');
     });
 
-    it('12. ERC20 Comliance Tests - balanceOf', async () => {
+    it('7. ERC20 Comliance Tests - balanceOf', async () => {
       await sut.balanceOf(accounts[1]).should.be.fulfilled;
     });
 
-    it('13. ERC20 Comliance Tests - allowance', async () => {
+    it('8. ERC20 Comliance Tests - allowance', async () => {
       await sut.allowance(accounts[1], accounts[0]).should.be.fulfilled;
     });
   });
 
   /*********************************************************************************************************************/
-  const prepareTrasnfer = async (doAssertions) => {
-    const allSenders = [
-      generalSaleAddress, communityReserveAddress, teamAddress, advisorsAddress, bountyAddress, administrativeAddress,
-      userAddress1, userAddress2, userAddress3
-    ];
-    // sendersWithoutVesting
-    const senders = [
-      userAddress1, userAddress2, userAddress3, userAddress4, userAddress5, userAddress6
-    ];
-    const recipients = [
-      generalSaleAddress, communityReserveAddress, teamAddress, advisorsAddress, bountyAddress, administrativeAddress,
-    ];
-
+  const prepareTrasnfer = async (sen, rec) => {
+    const senders = sen;
+    const recipients = rec;
     const transfers = [];
-    senders.forEach((sender, index) => {
+    for (let i = 0; i < senders.length; i += 1) {
       const newTransfer = {
-        to: recipients[index],
-        value: 1000*index,
+        to: recipients[i],
+        value: 1000*i,
       };
       transfers.push(newTransfer);
-    });
+    }
+    console.log('transfers = ', transfers);
+    const initialSenderBalances = [];
+    const initialRecipientBalances = [];
+    const finalSenderBalances = [];
+    const finalRecipientBalances = [];
+    const senderDiff = [];
+    const recipientsDiff = [];
 
-    if (doAssertions) {
-      const initialSenderBalances = [];
-      const initialRecipientBalances = [];
-      const finalSenderBalances = [];
-      const finalRecipientBalances = [];
-      const senderDiff = [];
-      const recipientsDiff = [];
+    // before let's transfer some tokens to test addresses senders
+    for (let i = 0; i < senders.length; i += 1) {
+      console.log('i',i, senders[i]);
+      await sut.transfer(senders[i], 1000*i, {from: generalSaleAddress});
+    }
 
-      // before let's transfer some tokens to test addresses senders
-      for (let i = 0; i < 6; i += 1) {
-        await sut.transfer(senders[i], 1000*i, {from: communityReserveAddress});
-      }
+    for (let i = 0; i < senders.length; i += 1) {
+      initialSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
+      initialRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
+      await sut.transfer(...Object.values(transfers[i]), {from: senders[i]});
+    }
+    console.log('initialSenderBalances = ', initialSenderBalances);
+    console.log('initialRecipientBalances = ', initialRecipientBalances);
 
-      for (let i = 0; i < 6; i += 1) {
-        initialSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
-        initialRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
-        await sut.transfer(...Object.values(transfers[i]), {from: senders[i]});
-      }
+    for (let i = 0; i < senders.length; i += 1) {
+      finalSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
+      finalRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
+      senderDiff.push(initialSenderBalances[i].sub(finalSenderBalances[i]));
+      recipientsDiff.push(finalRecipientBalances[i].sub(initialRecipientBalances[i]));
+    }
+    console.log('finalSenderBalances = ', finalSenderBalances);
+    console.log('finalRecipientBalances = ', finalRecipientBalances);
+    console.log('senderDiff = ', senderDiff);
+    console.log('recipientsDiff = ', recipientsDiff);
 
-      for (let i = 0; i < 6; i += 1) {
-        finalSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
-        finalRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
-        senderDiff.push(initialSenderBalances[i].sub(finalSenderBalances[i]));
-        recipientsDiff.push(finalRecipientBalances[i].sub(initialRecipientBalances[i]));
-      }
-
-      for (let i = 0; i < 6; i += 1) {
-        senderDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
-        recipientsDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
-      }
-
-    } else {
-      /*await sut.transfer(...Object.values(transfer1), {from: sender1});
-       await sut.transfer(...Object.values(transfer2), {from: sender2});
-       await sut.transfer(...Object.values(transfer3), {from: sender3});*/
+    for (let i = 0; i < senders.length; i += 1) {
+      senderDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
+      recipientsDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
     }
   };
 
@@ -380,33 +198,99 @@ contract('SBIToken', function (accounts) {
     }
   };
 
-  const negativeVestingTest = async (address) => {
-    const recipient = accounts[17]; // Yet unused
+  const checkTransferFromAndApprovalEvents = async (account1, account2, account3) => {
+    var watcher = sut.Transfer();
+    var approvalWatcher = sut.Approval();
+
+    const sender = account1;
+    const owner = account2;
+    const recipient = account3;
+
+    // Approve parameters
+    const approve = {
+      spender: sender,
+      value: 100
+    };
+
+    // TransferFrom parameters
     const transfer = {
+      from: owner,
       to: recipient,
       value: 100
     };
-    const initialSenderBalance = new BigNumber(await sut.balanceOf(address));
-    const initialRecipientBalance = new BigNumber(await sut.balanceOf(recipient));
-    sut.transfer(...Object.values(transfer), {from: address});
-    const finalSenderBalance = new BigNumber(await sut.balanceOf(address));
-    const finalRecipientBalance = new BigNumber(await sut.balanceOf(recipient));
-    finalSenderBalance.should.be.bignumber.equal(initialSenderBalance, address + ' balance not frozen');
-    finalRecipientBalance.should.be.bignumber.equal(initialRecipientBalance, address + ' balance not frozen');
+
+    await sut.approve(...Object.values(approve), {from: owner});
+    const approvalOutput = approvalWatcher.get();
+
+    // Verify number of Approval event arguments, their names, and content
+    let eventArguments = approvalOutput[0].args;
+    const arg0Count = Object.keys(eventArguments).length;
+    const arg01Name = Object.keys(eventArguments)[0];
+    const arg01Value = eventArguments[arg01Name];
+    const arg02Name = Object.keys(eventArguments)[1];
+    const arg02Value = eventArguments[arg02Name];
+    const arg03Name = Object.keys(eventArguments)[2];
+    const arg03Value = eventArguments[arg03Name];
+
+    arg0Count.should.be.equal(3, 'Approval event number of arguments');
+    arg01Name.should.be.equal('tokenOwner', 'Transfer event first argument name');
+    arg01Value.should.be.equal(owner, 'Transfer event from address');
+    arg02Name.should.be.equal('spender', 'Transfer event second argument name');
+    arg02Value.should.be.equal(sender, 'Transfer event to address');
+    arg03Name.should.be.equal('tokens', 'Transfer event third argument name');
+    arg03Value.should.be.bignumber.equal(transfer.value, 'Transfer event value');
+
+
+    await sut.transferFrom(...Object.values(transfer), {from: sender});
+    const output = watcher.get();
+
+    // Verify number of Transfer event arguments, their names, and content
+    eventArguments = output[0].args;
+    const argCount = Object.keys(eventArguments).length;
+    const arg1Name = Object.keys(eventArguments)[0];
+    const arg1Value = eventArguments[arg1Name];
+    const arg2Name = Object.keys(eventArguments)[1];
+    const arg2Value = eventArguments[arg2Name];
+    const arg3Name = Object.keys(eventArguments)[2];
+    const arg3Value = eventArguments[arg3Name];
+
+    argCount.should.be.equal(3, 'Transfer event number of arguments');
+    arg1Name.should.be.equal('from', 'Transfer event first argument name');
+    arg1Value.should.be.equal(owner, 'Transfer event from address');
+    arg2Name.should.be.equal('to', 'Transfer event second argument name');
+    arg2Value.should.be.equal(recipient, 'Transfer event to address');
+    arg3Name.should.be.equal('tokens', 'Transfer event third argument name');
+    arg3Value.should.be.bignumber.equal(transfer.value, 'Transfer event value');
   };
 
-  const positiveVestingTest = async (address) => {
-    const recipient = accounts[17]; // Yet unused
-    const transfer = {
-      to: recipient,
-      value: 100
+  const checkTransferEvents = async (account1, account2) => {
+    const watcher = sut.Transfer();
+
+    const sender1 = account1;
+    const recipient1 = account2;
+    const transfer1 = {
+      to: recipient1,
+      value: 1
     };
-    const initialSenderBalance = new BigNumber(await sut.balanceOf(address));
-    const initialRecipientBalance = new BigNumber(await sut.balanceOf(recipient));
-    sut.transfer(...Object.values(transfer), {from: address});
-    const finalSenderBalance = new BigNumber(await sut.balanceOf(address));
-    const finalRecipientBalance = new BigNumber(await sut.balanceOf(recipient));
-    finalSenderBalance.should.be.bignumber.equal(initialSenderBalance.sub(transfer.value), address + ' balance not frozen');
-    finalRecipientBalance.should.be.bignumber.equal(initialRecipientBalance + transfer.value, address + ' balance not frozen');
+
+    await sut.transfer(...Object.values(transfer1), {from: sender1});
+    const output = watcher.get();
+
+    const eventArguments = output[0].args;
+    const argCount = Object.keys(eventArguments).length;
+    const arg1Name = Object.keys(eventArguments)[0];
+    const arg1Value = eventArguments[arg1Name];
+    const arg2Name = Object.keys(eventArguments)[1];
+    const arg2Value = eventArguments[arg2Name];
+    const arg3Name = Object.keys(eventArguments)[2];
+    const arg3Value = eventArguments[arg3Name];
+
+    argCount.should.be.equal(3, 'Transfer event number of arguments');
+    arg1Name.should.be.equal('from', 'Transfer event first argument name');
+    arg1Value.should.be.equal(sender1, 'Transfer event from address');
+    arg2Name.should.be.equal('to', 'Transfer event second argument name');
+    arg2Value.should.be.equal(recipient1, 'Transfer event to address');
+    arg3Name.should.be.equal('tokens', 'Transfer event third argument name');
+    arg3Value.should.be.bignumber.equal(transfer1.value, 'Transfer event value');
   }
 });
