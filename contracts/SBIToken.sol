@@ -1,16 +1,18 @@
 pragma solidity 0.4.18;
 import './Owned.sol';
 import './CrowdsaleParameters.sol';
+import './SafeMath.sol';
 
 contract SBIToken is Owned, CrowdsaleParameters {
+    using SafeMath for uint256;
     /* Public variables of the token */
     string public standard = 'Token 0.1';
     string public name = 'Suboil Blockchain investitions';
     string public symbol = 'SBI';
     uint8 public decimals = 18;
 
-    /* Arrays of all balances, vesting, approvals, and approval uses */
-    mapping (address => uint256) private balances;              // Total token balances
+    /* Arrays of all balances */
+    mapping (address => uint256) private balances;
     mapping (address => mapping (address => uint256)) private allowed;
     mapping (address => mapping (address => bool)) private allowanceUsed;
 
@@ -36,13 +38,10 @@ contract SBIToken is Owned, CrowdsaleParameters {
 
     function SBIToken() public {
         owner = msg.sender;
-
         mintToken(generalSaleWallet);
         mintToken(bounty);
         mintToken(partners);
-        mintToken(featureDevelopment);
         mintToken(team);
-
         NewSBIToken(address(this));
     }
 
@@ -202,20 +201,5 @@ contract SBIToken is Owned, CrowdsaleParameters {
     */
     function toggleTransfers(bool _enable) external onlyOwner {
         transfersEnabled = _enable;
-    }
-
-    /**
-    *  Save unsold general sale tokens to featureDevelopment wallet
-    *
-    */
-    function closeGeneralSale() external onlyOwner {
-        // Saved amount is never greater than total supply,
-        // so no underflow possible here
-        uint featureDevelopmentAmount = balances[generalSaleWallet.addr];
-        totalSupply -= featureDevelopmentAmount;
-        balances[generalSaleWallet.addr] = 0;
-        balances[featureDevelopment] = featureDevelopmentAmount;
-        Destruction(featureDevelopmentAmount);
-        Transfer(generalSaleWallet.addr, featureDevelopment, featureDevelopmentAmount);
     }
 }

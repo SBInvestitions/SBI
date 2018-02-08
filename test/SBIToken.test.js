@@ -5,22 +5,18 @@ require('chai')
   .should();
 
 contract('SBIToken', function (accounts) {
-  const SBIToken = artifacts.require('./SBIToken.sol');
+  const SBIToken = artifacts.require('./../contracts/SBIToken.sol');
   let sut;
-  var generalSaleAddress; // Customer wallets
-  var communityReserveAddress;
-  var teamAddress;
-  var advisorsAddress;
-  var bountyAddress;
-  var administrativeAddress;
-  var userAddress1;
-  var userAddress2;
-  var userAddress3;
-  var userAddress4;
-  var userAddress5;
-  var userAddress6;
-  var userAddress7;
-  var generalSaleEndDate;
+  let generalSaleAddress; // Customer wallets
+  let bountyAddress;
+  let partnersAddress;
+  let teamAddress;
+  let featureDevelopmentAddress;
+  let userAddress1;
+  let userAddress2;
+  let userAddress3;
+  let generalSaleStartDate;
+  let generalSaleEndDate;
 
   describe('SBIToken tests', async () => {
 
@@ -28,19 +24,15 @@ contract('SBIToken', function (accounts) {
       BigNumber.config({ DECIMAL_PLACES: 18, ROUNDING_MODE: BigNumber.ROUND_DOWN });
       // Provide 10M gas for token deployment. As of Nov-16-17, this is 0.001 ETH == $0.30
       sut = await SBIToken.new({gas: 10000000});
-      generalSaleAddress = accounts[1]; // 0x8d6d63c22d114c18c2a0da6db0a8972ed9c40343
-      communityReserveAddress = accounts[8]; // 0xa7a629529599023207b3b89a7ee792ad20e6a8fb
-      teamAddress = accounts[12]; // 0xd00094c27603bade402d572e845354e31655f65b
-      advisorsAddress = accounts[13]; // 0x1ea0a708a84b2b45e99a6f8f0aef7434b7677ab8
-      bountyAddress = accounts[14]; // 0xbf39026615ae31c0534e61132f4a306828fcd27a
-      administrativeAddress = accounts[15]; // 0xc1e49322d28ea5b6cefb43e5069c64f5cd4015bf
-      userAddress1 = accounts[2]; // 0x9567397b445998e7e405d5fc3d239391bf5d0200
-      userAddress2 = accounts[3]; // 0x5d2fca837fdfddcb034555d8e79ca76a54038e16
-      userAddress3 = accounts[4]; // 0xd3b6b8528841c1c9a63ffa38d96785c32e004fa5
-      userAddress4 = accounts[6]; // 0xd9bbeda239cf85ed4157ae333073597c8ee206bf
-      userAddress5 = accounts[7]; // 0x54ff4c68d05e2598c9241ade09ac1fd5ffb8279c
-      userAddress6 = accounts[9]; // 0x2587160168148c7c63ea8e7ca66755dbec62c77e
-      userAddress7 = accounts[10]; // 0x64820b0f23d263ffb468edcc749e6a30c4e49852
+      generalSaleAddress = accounts[1];
+      bountyAddress = accounts[2];
+      partnersAddress = accounts[3];
+      teamAddress = accounts[4];
+      featureDevelopmentAddress = accounts[5];
+      userAddress1 = accounts[6];
+      userAddress2 = accounts[7];
+      userAddress3 = accounts[8];
+      generalSaleStartDate = (await sut.generalSaleStartDate()).toNumber();
       generalSaleEndDate = (await sut.generalSaleEndDate()).toNumber();
     });
 
@@ -58,23 +50,23 @@ contract('SBIToken', function (accounts) {
 
     //#### 2. Mint tokens.
     it('2. Should put correct amounts in all wallets in the first account', async () => {
-      const generalSaleWalletBalance = await sut.balanceOf(generalSaleAddress);
-      const communityReserveBalance = await sut.balanceOf(communityReserveAddress);
-      const teamBalance = await sut.balanceOf(teamAddress);
-      const advisorsBalance = await sut.balanceOf(advisorsAddress);
-      const bountyBalance = await sut.balanceOf(bountyAddress);
-      const administrativeBalance = await sut.balanceOf(administrativeAddress);
-      const initialBalance7 = await sut.balanceOf(userAddress1);
-      const initialBalance8 = await sut.balanceOf(userAddress2);
+      const generalSaleAddressBalance = await sut.balanceOf(generalSaleAddress);
+      const bountyAddressBalance = await sut.balanceOf(bountyAddress);
+      const partnersAddressBalance = await sut.balanceOf(partnersAddress);
+      const teamAddressBalance = await sut.balanceOf(teamAddress);
+      const featureDevelopmentAddressBalance = await sut.balanceOf(featureDevelopmentAddress);
+      const userAddress1Balance = await sut.balanceOf(userAddress1);
+      const userAddress2Balance = await sut.balanceOf(userAddress2);
+      const userAddress3Balance = await sut.balanceOf(userAddress3);
 
-      assert.equal(350e24, generalSaleWalletBalance.valueOf(), 'Wallet generalSaleWalletBalance is wrong');
-      assert.equal(450e24, communityReserveBalance.valueOf(), 'Wallet communityReserveBalance is wrong');
-      assert.equal(170e24, teamBalance.valueOf(), 'Wallet teamBalance is wrong');
-      assert.equal(24e23, advisorsBalance.valueOf(), 'Wallet advisorsBalance is wrong');
-      assert.equal(176e23, bountyBalance.valueOf(), 'Wallet bountyBalance is wrong');
-      assert.equal(10e24, administrativeBalance.valueOf(), 'Wallet administrativeBalance is wrong');
-      assert.equal(0, initialBalance7.valueOf(), 'Wallet 7 balance is wrong');
-      assert.equal(0, initialBalance8.valueOf(), 'Wallet 8 balance is wrong');
+      assert.equal(22800000, generalSaleAddressBalance.valueOf(), 'Wallet generalSaleAddress is wrong');
+      assert.equal(2000000, bountyAddressBalance.valueOf(), 'Wallet bountyAddress is wrong');
+      assert.equal(3200000, partnersAddressBalance.valueOf(), 'Wallet partnersAddress is wrong');
+      assert.equal(12000000, teamAddressBalance.valueOf(), 'Wallet teamAddress is wrong');
+      assert.equal(0, featureDevelopmentAddressBalance.valueOf(), 'Wallet featureDevelopmentAddress is wrong');
+      assert.equal(0, userAddress1Balance.valueOf(), 'Wallet userAddress1 is wrong');
+      assert.equal(0, userAddress2Balance.valueOf(), 'Wallet userAddress2 balance is wrong');
+      assert.equal(0, userAddress3Balance.valueOf(), 'Wallet userAddress3 balance is wrong');
     });
 
     //#### 3. Setting stage periods.

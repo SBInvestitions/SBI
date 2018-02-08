@@ -12,6 +12,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     uint public saleStopTimestamp;
     uint public saleGoal;
     bool public goalReached = false;
+    uint tokensPerEth = 50000;
     mapping (address => uint256) private investmentRecords;
 
     /* Events */
@@ -45,18 +46,25 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         return active;
     }
 
+    /*
+        eth rate is very volatile
+    */
+    function setTokenRate(uint rate) public onlyOwner {
+        tokensPerEth = rate;
+    }
+
     /**
     *  Process received payment
     *
     *  Determine the integer number of tokens that was purchased considering current
     *  stage, tier bonus, and remaining amount of tokens in the sale wallet.
-    *  Transfer purchased tokens to bakerAddress and return unused portion of
+    *  Transfer purchased tokens to investorAddress and return unused portion of
     *  ether (change)
     *
-    * @param bakerAddress - address that ether was sent from
+    * @param investorAddress - address that ether was sent from
     * @param amount - amount of Wei received
     */
-    function processPayment(address bakerAddress, uint amount) internal {
+    function processPayment(address investorAddress, uint amount) internal {
         require(isICOActive());
 
         // Before Metropolis update require will not refund gas, but
@@ -64,10 +72,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         assert(msg.value > 0 finney);
 
         // Tell everyone about the transfer
-        FundTransfer(bakerAddress, address(this), amount);
-
-        // Calculate tokens per ETH for this tier
-        uint tokensPerEth = 10000;
+        FundTransfer(investorAddress, address(this), amount);
 
         // Calculate token amount that is purchased,
         // truncate to integer
@@ -86,20 +91,20 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         uint acceptedAmount = tokenAmount * 1e18 / tokensPerEth;
 
         // Transfer tokens to baker and return ETH change
-        token.transferFrom(saleWalletAddress, bakerAddress, tokenAmount * tokenMultiplier);
-        TokenSale(bakerAddress, amount, tokenAmount, tokensPerEth);
+        token.transferFrom(saleWalletAddress, investorAddress, tokenAmount * tokenMultiplier);
+        TokenSale(investorAddress, amount, tokenAmount, tokensPerEth);
 
         // Return change
         uint change = amount - acceptedAmount;
         if (change > 0) {
-            if (bakerAddress.send(change)) {
-                FundTransfer(address(this), bakerAddress, change);
+            if (investorAddress.send(change)) {
+                FundTransfer(address(this), investorAddress, change);
             }
             else revert();
         }
 
         // Update crowdsale performance
-        investmentRecords[bakerAddress] += acceptedAmount;
+        investmentRecords[investorAddress] += acceptedAmount;
         totalCollected += acceptedAmount;
     }
 
@@ -135,6 +140,11 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     */
     function kill() external onlyOwner {
         require(!isICOActive());
+
+        // save the not sold tokens to featureDevelopment wallet
+        uint featureDevelopmentAmount = token.balanceOf(saleWalletAddress);
+        // Transfer tokens to baker and return ETH change
+        token.transferFrom(saleWalletAddress, CrowdsaleParameters.featureDevelopment.addr, featureDevelopmentAmount);
         selfdestruct(owner);
     }
 }
