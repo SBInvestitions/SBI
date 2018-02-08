@@ -64,7 +64,6 @@ contract('SBIToken', function (accounts) {
       const userAddress3Balance = await sut.balanceOf(userAddress3);
       const userAddress4Balance = await sut.balanceOf(userAddress4);
       const userAddress5Balance = await sut.balanceOf(userAddress5);
-
       assert.equal(22800000 * 1e18, generalSaleAddressBalance.valueOf(), 'Wallet generalSaleAddress is wrong');
       assert.equal(2000000 * 1e18, bountyAddressBalance.valueOf(), 'Wallet bountyAddress is wrong');
       assert.equal(3200000 * 1e18, partnersAddressBalance.valueOf(), 'Wallet partnersAddress is wrong');
