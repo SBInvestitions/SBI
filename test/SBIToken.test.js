@@ -74,6 +74,7 @@ contract('SBIToken', function (accounts) {
       assert.equal(0, userAddress3Balance.valueOf(), 'Wallet userAddress3 balance is wrong');
       assert.equal(0, userAddress4Balance.valueOf(), 'Wallet userAddress2 balance is wrong');
       assert.equal(0, userAddress5Balance.valueOf(), 'Wallet userAddress3 balance is wrong');
+
     });
 
     //#### 3. Setting stage periods.
