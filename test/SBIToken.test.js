@@ -90,8 +90,6 @@ contract('SBIToken', function (accounts) {
     it('4. ERC20 Comliance Tests - Transfer generates correct Transfer event', async () => {
       // Set watcher to Transfer event that we are looking for
       await checkTransferEvents(accounts[1], accounts[7]);
-
-
     });
 
     it('5. ERC20 Comliance Tests - Allocate + TransferFrom generates correct Approval and Transfer event', async () => {
