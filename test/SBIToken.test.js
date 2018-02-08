@@ -109,6 +109,7 @@ contract('SBIToken', function (accounts) {
     it('8. ERC20 Comliance Tests - allowance', async () => {
       await sut.allowance(accounts[1], accounts[0]).should.be.fulfilled;
     });
+
   });
 
   /*********************************************************************************************************************/
