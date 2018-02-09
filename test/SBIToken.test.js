@@ -152,6 +152,7 @@ contract('SBIToken', function (accounts) {
       senderDiff.push(initialSenderBalances[i].sub(finalSenderBalances[i]));
       recipientsDiff.push(finalRecipientBalances[i].sub(initialRecipientBalances[i]));
     }
+
     console.log('finalSenderBalances = ', finalSenderBalances);
     console.log('finalRecipientBalances = ', finalRecipientBalances);
     console.log('senderDiff = ', senderDiff);
