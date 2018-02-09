@@ -7,16 +7,21 @@ require('chai')
 contract('SBIToken', function (accounts) {
   const SBIToken = artifacts.require('./../contracts/SBIToken.sol');
   let sut;
-  let generalSaleAddress; // Customer wallets
-  let bountyAddress;
-  let partnersAddress;
-  let teamAddress;
-  let featureDevelopmentAddress;
-  let userAddress1;
-  let userAddress2;
-  let userAddress3;
-  let userAddress4;
-  let userAddress5;
+  let generalSaleAddress = accounts[1]; // Customer wallets
+  let bountyAddress = accounts[2];
+  let partnersAddress = accounts[3];
+  let teamAddress = accounts[4];
+  let featureDevelopmentAddress = accounts[5];
+  let userAddress1 = accounts[6];
+  let userAddress2 = accounts[7];
+  let userAddress3 = accounts[8];
+  let userAddress4 = accounts[9];
+  let userAddress5 = accounts[10];
+  let userAddress6 = accounts[11];
+  let userAddress7 = accounts[12];
+  let userAddress8 = accounts[13];
+  let userAddress9 = accounts[14];
+  let userAddress10 = accounts[15];
   let generalSaleStartDate;
   let generalSaleEndDate;
 
@@ -26,16 +31,6 @@ contract('SBIToken', function (accounts) {
       BigNumber.config({ DECIMAL_PLACES: 18, ROUNDING_MODE: BigNumber.ROUND_DOWN });
       // Provide 10M gas for token deployment. As of Nov-16-17, this is 0.001 ETH == $0.30
       sut = await SBIToken.new({gas: 10000000});
-      generalSaleAddress = accounts[1];
-      bountyAddress = accounts[2];
-      partnersAddress = accounts[3];
-      teamAddress = accounts[4];
-      featureDevelopmentAddress = accounts[5];
-      userAddress1 = accounts[6];
-      userAddress2 = accounts[7];
-      userAddress3 = accounts[8];
-      userAddress4 = accounts[7];
-      userAddress5 = accounts[10];
       generalSaleStartDate = (await sut.generalSaleStartDate()).toNumber();
       generalSaleEndDate = (await sut.generalSaleEndDate()).toNumber();
     });
@@ -82,7 +77,7 @@ contract('SBIToken', function (accounts) {
       // Contract deployed and general parameters initialization called. Mint function called.
       // Allocation owner requests transfer from allocation wallet to their address
       await prepareTrasnfer(
-        [userAddress1, userAddress2, userAddress3, userAddress4, userAddress5],
+        [userAddress6, userAddress7, userAddress8, userAddress9, userAddress10],
         [generalSaleAddress, bountyAddress, partnersAddress, teamAddress, featureDevelopmentAddress],
       )
     });
@@ -124,17 +119,13 @@ contract('SBIToken', function (accounts) {
       };
       transfers.push(newTransfer);
     }
-    console.log('transfers = ', transfers);
     const initialSenderBalances = [];
     const initialRecipientBalances = [];
     const finalSenderBalances = [];
     const finalRecipientBalances = [];
-    const senderDiff = [];
-    const recipientsDiff = [];
 
     // before let's transfer some tokens to test addresses senders
     for (let i = 0; i < senders.length; i += 1) {
-      console.log('i',i, senders[i]);
       await sut.transfer(senders[i], 1000*i, {from: generalSaleAddress});
     }
 
@@ -143,24 +134,14 @@ contract('SBIToken', function (accounts) {
       initialRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
       await sut.transfer(...Object.values(transfers[i]), {from: senders[i]});
     }
-    console.log('initialSenderBalances = ', initialSenderBalances);
-    console.log('initialRecipientBalances = ', initialRecipientBalances);
 
     for (let i = 0; i < senders.length; i += 1) {
       finalSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
       finalRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
-      senderDiff.push(initialSenderBalances[i].sub(finalSenderBalances[i]));
-      recipientsDiff.push(finalRecipientBalances[i].sub(initialRecipientBalances[i]));
     }
-
-    console.log('finalSenderBalances = ', finalSenderBalances);
-    console.log('finalRecipientBalances = ', finalRecipientBalances);
-    console.log('senderDiff = ', senderDiff);
-    console.log('recipientsDiff = ', recipientsDiff);
-
     for (let i = 0; i < senders.length; i += 1) {
-      senderDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
-      recipientsDiff[i].should.be.bignumber.equal(transfers[i].value, 'Wallet' +  i + ' balance decreased by transfer value');
+      initialSenderBalances[i].should.be.bignumber.equal(finalSenderBalances[i].plus(transfers[i].value), 'Wallet' +  i + ' balance decreased by transfer value');
+      finalRecipientBalances[i].should.be.bignumber.equal(initialRecipientBalances[i].plus(transfers[i].value), 'Wallet' +  i + ' balance decreased by transfer value');
     }
   };
 
