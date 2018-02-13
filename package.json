@@ -1,7 +1,7 @@
 {
-  "name": "BlockchainBusinessDevelopment",
+  "name": "SubOil Blockchain Investment",
   "version": "1.0.0",
-  "description": "BDEV project with tests",
+  "description": "SBI contracts with tests",
   "main": "",
   "directories": {
     "test": "test"

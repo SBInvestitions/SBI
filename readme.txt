@@ -1,7 +1,6 @@
-SBI project repo
+First Russian DaICO Project For Hi-yield SubOil Investment
 
-Frontend - vue, bootstrap4, web3
-Backend - node.js, mongo, ethereum
+SBI project token contract and DAICO
 
 Invest Technology Ltd
 
