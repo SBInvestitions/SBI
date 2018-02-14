@@ -12,7 +12,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     uint public saleStopTimestamp;
     uint public saleGoal;
     bool public goalReached = false;
-    uint tokensPerEth = 50000;
+    uint public tokensPerEth = 50000;
     mapping (address => uint256) private investmentRecords;
 
     /* Events */
@@ -27,13 +27,9 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     function SBITokenCrowdsale(address _tokenAddress) public {
         token = SBIToken(_tokenAddress);
         tokenMultiplier = tokenMultiplier ** token.decimals();
-        saleWalletAddress = CrowdsaleParameters.generalSaleWallet.addr;
-
-        saleStartTimestamp = CrowdsaleParameters.generalSaleStartDate;
-        saleStopTimestamp = CrowdsaleParameters.generalSaleEndDate;
-
+        saleWalletAddress = generalSaleWallet.addr;
         // Initialize sale goal
-        saleGoal = CrowdsaleParameters.generalSaleWallet.amount;
+        saleGoal = generalSaleWallet.amount;
     }
 
     /**
@@ -42,7 +38,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     * @return active - True, if sale is active
     */
     function isICOActive() public constant returns (bool active) {
-        active = ((saleStartTimestamp <= now) && (now < saleStopTimestamp) && (!goalReached));
+        active = ((generalSaleStartDate <= now) && (now < generalSaleEndDate) && (!goalReached));
         return active;
     }
 
@@ -66,12 +62,9 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     */
     function processPayment(address investorAddress, uint amount) internal {
         require(isICOActive());
-
-        // Before Metropolis update require will not refund gas, but
-        // for some reason require statement around msg.value always throws
         assert(msg.value > 0 finney);
 
-        // Tell everyone about the transfer
+        // Fund transfer event
         FundTransfer(investorAddress, address(this), amount);
 
         // Calculate token amount that is purchased,
@@ -140,11 +133,17 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     */
     function kill() external onlyOwner {
         require(!isICOActive());
-
+        if (now < generalSaleStartDate) {
+            selfdestruct(owner);
+        }
+        if (token.balanceOf(generalSaleWallet.addr) > 0) {
+            revert();
+        }
         // save the not sold tokens to featureDevelopment wallet
         uint featureDevelopmentAmount = token.balanceOf(saleWalletAddress);
         // Transfer tokens to baker and return ETH change
-        token.transferFrom(saleWalletAddress, CrowdsaleParameters.featureDevelopment.addr, featureDevelopmentAmount);
+        token.transferFrom(saleWalletAddress, featureDevelopment.addr, featureDevelopmentAmount);
+        FundTransfer(address(this), msg.sender, this.balance);
         selfdestruct(owner);
     }
 }
