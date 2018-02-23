@@ -1,5 +1,5 @@
 {
-  "name": "SubOil Blockchain Investment",
+  "name": "SuboilBlockchainInvestitions",
   "version": "1.0.0",
   "description": "SBI contracts with tests",
   "main": "",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:usetech-llc/ivep.git"
+    "url": "git+ssh://git@github.com:SBInvestitions/SBI.git"
   },
   "author": "",
   "license": "ISC",
@@ -35,7 +35,7 @@
     "git": "^0.1.5",
     "json2csv": "^3.11.5",
     "path": "^0.12.7",
-    "solc": "^0.4.18",
+    "solc": "^0.4.20",
     "web3": "^1.0.0-beta.24"
   },
   "standard": {

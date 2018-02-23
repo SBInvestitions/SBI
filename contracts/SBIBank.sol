@@ -33,7 +33,6 @@ contract CrowdsaleParameters {
     AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0xa83202b9346d9Fa846f1B0b3BB0AaDAbEa88908E, 0);
 }
 
-
 contract Owned {
     address public owner;
 
@@ -312,152 +311,146 @@ contract SBIToken is Owned, CrowdsaleParameters {
 }
 
 
-contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
+
+/**
+ * @title SBIBank
+ * @dev Base contract that supports multiple payees claiming funds sent to this contract
+ * according to the sbi tokens proportions they own.
+ */
+
+contract SBIBank is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
-    /* Token and records */
     SBIToken private token;
-    address bank;
-    address saleWalletAddress;
-    uint private tokenMultiplier = 10;
-    uint public totalCollected = 0;
-    uint public saleStartTimestamp;
-    uint public saleStopTimestamp;
-    uint public saleGoal;
-    bool public goalReached = false;
-    uint public tokensPerEth = 50000;
-    mapping (address => uint256) private investmentRecords;
+    uint256 public currentVotingDate = 0;
+    uint public currentVotingAmount = 0;
+    uint public allowedWithdraw = 0;
+    uint public allowedRefund = 0;
 
-    /* Events */
-    event TokenSale(address indexed tokenReceiver, uint indexed etherAmount, uint indexed tokenAmount, uint tokensPerEther);
-    event FundTransfer(address indexed from, address indexed to, uint indexed amount);
+    uint256 public allow = 0;
+    uint256 public cancel = 0;
+    uint256 public refund = 0;
 
-    /**
-    * Constructor
-    *
-    * @param _tokenAddress - address of token (deployed before this contract)
-    */
-    function SBITokenCrowdsale(address _tokenAddress, address _bankAddress) public {
-        token = SBIToken(_tokenAddress);
-        bank = _bankAddress;
-        tokenMultiplier = tokenMultiplier ** token.decimals();
-        saleWalletAddress = generalSaleWallet.addr;
-        // Initialize sale goal
-        saleGoal = generalSaleWallet.amount;
+    // result of a voiting
+    uint8 result = 0;
+
+    // investors votes
+    mapping(address => uint256) public votes;
+    // investors refunded amounts of voting
+    mapping(address => uint) public alreadyRefunded;
+
+    event NewVoting(uint256 indexed date, uint indexed amount);
+    event NewVote(address indexed voter, uint256 indexed date, uint8 indexed proposal);
+    event CancelVote(uint256 indexed date, uint indexed amount);
+    event AllowVote(uint256 indexed date, uint indexed amount);
+    event RefundVote(uint256 indexed date, uint indexed amount);
+    event Refund(uint256 indexed date, uint indexed amount, address indexed investor);
+    event Withdraw(uint256 indexed date, uint indexed amount);
+  /**
+   * @dev Constructor
+   */
+  function SBIBank(address _tokenAddress) public payable {
+     token = SBIToken(_tokenAddress);
+  }
+
+  /**
+   * @dev Start a new voting.
+   * @param _amount The amount of the funds requested to transfer.
+   */
+  function addVoting(uint _amount) onlyOwner public {
+    require(this.balance > _amount);
+    // can add only if previouse voiting closed
+    require(currentVotingDate == 0 && currentVotingAmount == 0);
+    currentVotingDate = now;
+    currentVotingAmount = _amount;
+    NewVoting(now, _amount);
+  }
+
+   /**
+   * @dev vote for only sbi tokens owners
+   */
+  function vote(uint8 proposal) public payable {
+      require(token.balanceOf(msg.sender) > 0);
+      require(now > currentVotingDate && now <= currentVotingDate + 3 days);
+      require(proposal == 1 || proposal == 2 || proposal == 3);
+      // you can vote only once for current voiting
+      require(votes[msg.sender] == 0);
+
+      alreadyRefunded[msg.sender] = 0;
+      votes[msg.sender] = proposal;
+      if(proposal == 1) {
+          allow.sub(token.balanceOf(msg.sender));
+      }
+      if(proposal == 2) {
+          cancel.sub(token.balanceOf(msg.sender));
+      }
+      if(proposal == 3) {
+          refund.sub(token.balanceOf(msg.sender));
+      }
+      NewVote(msg.sender, now, proposal);
+  }
+
+  /**
+   * @dev End current voting with 3 scenarios - allow, cancel or refund
+   */
+  function endVote() public onlyOwner {
+      require(currentVotingDate > 0 && now >= currentVotingDate + 3 days);
+      if (allow > cancel && allow > refund) {
+          // allow withdraw
+          AllowVote(currentVotingDate, allow);
+          allowedWithdraw = currentVotingAmount;
+          allowedRefund = 0;
+      }
+      if (cancel > allow && cancel > refund) {
+          // cancel voiting
+          CancelVote(currentVotingDate, cancel);
+          allowedWithdraw = 0;
+          allowedRefund = 0;
+      }
+      if (refund > allow && refund > cancel) {
+          // cancel voiting
+          RefundVote(currentVotingDate, refund);
+          allowedRefund = currentVotingAmount;
+          allowedWithdraw = 0;
+      }
+      currentVotingDate = 0;
+      currentVotingAmount = 0;
+      allow = 0;
+      cancel = 0;
+      refund = 0;
+  }
+
+  /**
+   * @dev Withdraw the current voiting amount
+   */
+  function withdraw() public onlyOwner {
+      require(currentVotingDate == 0);
+      require(allowedWithdraw > 0);
+      owner.transfer(allowedWithdraw);
+      Withdraw(now, allowedWithdraw);
+      allowedWithdraw = 0;
     }
 
-    /**
-    * Is sale active
-    *
-    * @return active - True, if sale is active
-    */
-    function isICOActive() public constant returns (bool active) {
-        active = ((generalSaleStartDate <= now) && (now < generalSaleEndDate) && (!goalReached));
-        return active;
-    }
+  /**
+   * @dev End current voting with 3 scenarios - allow, cancel or refund
+   */
+  function refund() public {
+      require(allowedRefund > 0);
+      // allows refund only once thrue the voiting
+      require(alreadyRefunded[msg.sender] == 0);
+      require(token.balanceOf(msg.sender) > 0);
+      // total supply tokens is 40 000 000
+      uint tokensPercent = token.balanceOf(msg.sender).div(40000000);
+      uint refundedAmount = tokensPercent.mul(allowedRefund);
+      uint refundedPercent = refundedAmount.div(this.balance);
+      msg.sender.transfer(refundedAmount);
+      uint refundedTokens = token.balanceOf(msg.sender).mul(refundedPercent);
+      token.transfer(featureDevelopment.addr, refundedTokens);
+      alreadyRefunded[msg.sender] = refundedAmount;
+      Refund(now, refundedAmount, msg.sender);
+  }
 
-
-    /*
-        eth rate is very volatile
-    */
-    function setTokenRate(uint rate) public onlyOwner {
-        tokensPerEth = rate;
-    }
-
-    /**
-    *  Process received payment
-    *
-    *  Determine the integer number of tokens that was purchased considering current
-    *  stage, tier bonus, and remaining amount of tokens in the sale wallet.
-    *  Transfer purchased tokens to investorAddress and return unused portion of
-    *  ether (change)
-    *
-    * @param investorAddress - address that ether was sent from
-    * @param amount - amount of Wei received
-    */
-    function processPayment(address investorAddress, uint amount) internal {
-        require(isICOActive());
-        assert(msg.value > 0 finney);
-
-        // Fund transfer event
-        FundTransfer(investorAddress, address(this), amount);
-
-        // Calculate token amount that is purchased,
-        // truncate to integer
-        uint tokenAmount = amount * tokensPerEth / 1e18;
-
-        // Check that stage wallet has enough tokens. If not, sell the rest and
-        // return change.
-        uint remainingTokenBalance = token.balanceOf(saleWalletAddress) / tokenMultiplier;
-        if (remainingTokenBalance < tokenAmount) {
-            tokenAmount = remainingTokenBalance;
-            goalReached = true;
-        }
-
-        // Calculate Wei amount that was received in this transaction
-        // adjusted to rounding and remaining token amount
-        uint acceptedAmount = tokenAmount * 1e18 / tokensPerEth;
-
-        // Transfer tokens to baker and return ETH change
-        token.transferFrom(saleWalletAddress, investorAddress, tokenAmount * tokenMultiplier);
-        TokenSale(investorAddress, amount, tokenAmount, tokensPerEth);
-
-        // Return change
-        uint change = amount - acceptedAmount;
-        if (change > 0) {
-            if (investorAddress.send(change)) {
-                FundTransfer(address(this), investorAddress, change);
-            }
-            else revert();
-        }
-
-        // Update crowdsale performance
-        investmentRecords[investorAddress] += acceptedAmount;
-        totalCollected += acceptedAmount;
-    }
-
-    /**
-    *  Transfer ETH amount from contract to owner's address.
-    *  Can only be used if ICO is closed
-    *
-    * @param amount - ETH amount to transfer in Wei
-    */
-    function safeWithdrawal(uint amount) external onlyOwner {
-        require(this.balance >= amount);
-        require(!isICOActive());
-
-        if (bank.send(amount)) {
-            FundTransfer(address(this), bank, amount);
-        }
-    }
-
-    /**
-    *  Default method
-    *
-    *  Processes all ETH that it receives and credits TKLN tokens to sender
-    *  according to current stage bonus
-    */
-    function () external payable {
-        processPayment(msg.sender, msg.value);
-    }
-
-    /**
-    *  Kill method
-    *
-    *  Destructs this contract
-    */
-    function kill() external onlyOwner {
-        require(!isICOActive());
-        if (this.balance > 0 || token.balanceOf(generalSaleWallet.addr) > 0) {
-            revert();
-        }
-        if (now < generalSaleStartDate) {
-            selfdestruct(owner);
-        }
-        // save the not sold tokens to featureDevelopment wallet
-        uint featureDevelopmentAmount = token.balanceOf(saleWalletAddress);
-        // Transfer tokens to baker and return ETH change
-        token.transferFrom(saleWalletAddress, featureDevelopment.addr, featureDevelopmentAmount);
-        FundTransfer(address(this), msg.sender, this.balance);
-        selfdestruct(owner);
-    }
+  /**
+   * @dev payable fallback
+   */
+  function () public payable {}
 }
