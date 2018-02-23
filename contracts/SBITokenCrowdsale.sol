@@ -324,7 +324,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     uint public saleStopTimestamp;
     uint public saleGoal;
     bool public goalReached = false;
-    uint public tokensPerEth = 50000;
+    uint public tokensPerEth = 48000;
     mapping (address => uint256) private investmentRecords;
 
     /* Events */

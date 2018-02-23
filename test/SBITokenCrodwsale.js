@@ -23,92 +23,73 @@ contract('SBITokenCrowdsale', function (accounts) {
     generalSaleStartDate: new Date('2018-03-27T00:00+00:00').getTime() / 1000, // March 27, 2018
     generalSaleEndDate: new Date('2018-05-08T00:00+00:00').getTime() / 1000, // May 8, 2018.
     //  misc
-    weiInEth: 1000000000000000000,
+    weiInEth: 1e18,
     //  pools
     pools: [
       {
         name: 'generalSale',
         address: accounts[1],
-        allocationAmount: 350 * 1000 * 1000,
-        vestingTime: new Date(1539648000)
-      },
-      {
-        name: 'communityReserve',
-        address: accounts[8],
-        allocationAmount: 450 * 1000 * 1000,
-        vestingTime: 0
-      },
-      {
-        name: 'team',
-        address: accounts[12],
-        allocationAmount: 170 * 1000 * 1000,
-        vestingTime: new Date(1586995200)
-      },
-      {
-        name: 'advisors',
-        address: accounts[13],
-        allocationAmount: 2.4 * 1000 * 1000,
-        vestingTime: 0
+        allocationAmount: 228 * 100 * 1000,
       },
       {
         name: 'bounty',
-        address: accounts[14],
-        allocationAmount: 176 * 100 * 1000,
-        vestingTime: 0
+        address: accounts[2],
+        allocationAmount: 2 * 1000 * 1000,
       },
       {
-        name: 'administrative',
-        address: accounts[15],
-        allocationAmount: 10 * 1000 * 1000,
-        vestingTime: 0
+        name: 'partners',
+        address: accounts[3],
+        allocationAmount: 32* 100 * 1000,
+      },
+      {
+        name: 'team',
+        address: accounts[4],
+        allocationAmount: 12 * 1000 * 1000,
+      },
+      {
+        name: 'featureDevelopment',
+        address: accounts[5],
+        allocationAmount: 0,
       },
       {
         name: 'wallet1',
-        address: accounts[2],
+        address: accounts[6],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'wallet2',
-        address: accounts[3],
+        address: accounts[7],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'wallet3',
-        address: accounts[4],
+        address: accounts[8],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'wallet4',
-        address: accounts[6],
+        address: accounts[9],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'wallet5',
-        address: accounts[7],
+        address: accounts[10],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'wallet6',
-        address: accounts[9],
+        address: accounts[11],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'wallet7',
-        address: accounts[10],
+        address: accounts[12],
         allocationAmount: 0,
-        vestingTime: 0
       },
       {
         name: 'playersReserv',
-        address: accounts[16],
+        address: accounts[13],
         allocationAmount: 0,
-        vestingTime: 0
       },
     ]
   };
