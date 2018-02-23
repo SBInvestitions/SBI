@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="dd3acac4-edb2-4451-983c-361593a2cd66" name="192.168.0.11" url="http://192.168.0.11">
+        <fileTransfer host="192.168.0.11" port="22" rootFolder="/home/kpozdnikin/sbi/contracts" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
