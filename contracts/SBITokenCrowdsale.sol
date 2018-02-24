@@ -1,4 +1,4 @@
-pragma solidity ^0.4.20;
+pragma solidity ^0.4.18;
 
 contract CrowdsaleParameters {
     ///////////////////////////////////////////////////////////////////////////
@@ -9,8 +9,8 @@ contract CrowdsaleParameters {
     // 1520208000 = March 5, 2018.
     // 1528156800 = June 5, 2018.
 
-    uint256 internal constant generalSaleStartDate = 1520208000;
-    uint256 internal constant generalSaleEndDate = 1528156800;
+    uint256 public constant generalSaleStartDate = 1520208000;
+    uint256 public constant generalSaleEndDate = 1528156800;
 
     ///////////////////////////////////////////////////////////////////////////
     // QA Config
@@ -125,8 +125,8 @@ contract SBIToken is Owned, CrowdsaleParameters {
 
     /* This generates a public event on the blockchain that will notify clients */
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed _owner, address indexed _spender, uint256 _value);
+    event Transfer(address indexed from, address indexed to, uint tokens);
+    event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
     event Issuance(uint256 _amount); // triggered when the total supply is increased
     event Destruction(uint256 _amount); // triggered when the total supply is decreased
 
@@ -355,7 +355,6 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         return active;
     }
 
-
     /*
         eth rate is very volatile
     */
@@ -447,7 +446,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     */
     function kill() external onlyOwner {
         require(!isICOActive());
-        if (this.balance > 0 || token.balanceOf(generalSaleWallet.addr) > 0) {
+        if (this.balance > 0) {
             revert();
         }
         if (now < generalSaleStartDate) {

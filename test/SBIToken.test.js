@@ -6,7 +6,7 @@ require('chai')
 
 contract('SBIToken', function (accounts) {
   const SBIToken = artifacts.require('./../contracts/SBIToken.sol');
-  let sut;
+  let token;
   let generalSaleAddress = accounts[1]; // Customer wallets
   let bountyAddress = accounts[2];
   let partnersAddress = accounts[3];
@@ -30,9 +30,10 @@ contract('SBIToken', function (accounts) {
     beforeEach(async function () {
       BigNumber.config({ DECIMAL_PLACES: 18, ROUNDING_MODE: BigNumber.ROUND_DOWN });
       // Provide 10M gas for token deployment. As of Nov-16-17, this is 0.001 ETH == $0.30
-      sut = await SBIToken.new({gas: 10000000});
-      generalSaleStartDate = (await sut.generalSaleStartDate()).toNumber();
-      generalSaleEndDate = (await sut.generalSaleEndDate()).toNumber();
+      token = await SBIToken.new({gas: 10000000});
+      generalSaleStartDate = '1520208000';
+      generalSaleEndDate = '1528156800';
+      // generalSaleEndDate = (await token.generalSaleEndDate()).toNumber();
     });
 
     //#### 1. Contract default parameters.
@@ -43,22 +44,22 @@ contract('SBIToken', function (accounts) {
 
     it('1. Should put 0 in the first account', async () => {
       const address = accounts[0];
-      const initialBalance = await sut.balanceOf(address);
+      const initialBalance = await token.balanceOf(address);
       assert.equal(0, initialBalance.valueOf(), 'The owner balance was non-zero');
     });
 
     //#### 2. Mint tokens.
     it('2. Should put correct amounts in all wallets in the first account', async () => {
-      const generalSaleAddressBalance = await sut.balanceOf(generalSaleAddress);
-      const bountyAddressBalance = await sut.balanceOf(bountyAddress);
-      const partnersAddressBalance = await sut.balanceOf(partnersAddress);
-      const teamAddressBalance = await sut.balanceOf(teamAddress);
-      const featureDevelopmentAddressBalance = await sut.balanceOf(featureDevelopmentAddress);
-      const userAddress1Balance = await sut.balanceOf(userAddress1);
-      const userAddress2Balance = await sut.balanceOf(userAddress2);
-      const userAddress3Balance = await sut.balanceOf(userAddress3);
-      const userAddress4Balance = await sut.balanceOf(userAddress4);
-      const userAddress5Balance = await sut.balanceOf(userAddress5);
+      const generalSaleAddressBalance = await token.balanceOf(generalSaleAddress);
+      const bountyAddressBalance = await token.balanceOf(bountyAddress);
+      const partnersAddressBalance = await token.balanceOf(partnersAddress);
+      const teamAddressBalance = await token.balanceOf(teamAddress);
+      const featureDevelopmentAddressBalance = await token.balanceOf(featureDevelopmentAddress);
+      const userAddress1Balance = await token.balanceOf(userAddress1);
+      const userAddress2Balance = await token.balanceOf(userAddress2);
+      const userAddress3Balance = await token.balanceOf(userAddress3);
+      const userAddress4Balance = await token.balanceOf(userAddress4);
+      const userAddress5Balance = await token.balanceOf(userAddress5);
       assert.equal(22800000 * 1e18, generalSaleAddressBalance.valueOf(), 'Wallet generalSaleAddress is wrong');
       assert.equal(2000000 * 1e18, bountyAddressBalance.valueOf(), 'Wallet bountyAddress is wrong');
       assert.equal(3200000 * 1e18, partnersAddressBalance.valueOf(), 'Wallet partnersAddress is wrong');
@@ -93,16 +94,16 @@ contract('SBIToken', function (accounts) {
     });
 
     it('6. ERC20 Comliance Tests - totalSupply', async () => {
-      var totalSupply = new BigNumber(await sut.totalSupply());
+      var totalSupply = new BigNumber(await token.totalSupply());
       totalSupply.should.be.bignumber.equal(40000000 * 1e18, 'Token total supply');
     });
 
     it('7. ERC20 Comliance Tests - balanceOf', async () => {
-      await sut.balanceOf(accounts[1]).should.be.fulfilled;
+      await token.balanceOf(accounts[1]).should.be.fulfilled;
     });
 
     it('8. ERC20 Comliance Tests - allowance', async () => {
-      await sut.allowance(accounts[1], accounts[0]).should.be.fulfilled;
+      await token.allowance(accounts[1], accounts[0]).should.be.fulfilled;
     });
 
   });
@@ -126,18 +127,18 @@ contract('SBIToken', function (accounts) {
 
     // before let's transfer some tokens to test addresses senders
     for (let i = 0; i < senders.length; i += 1) {
-      await sut.transfer(senders[i], 1000*i, {from: generalSaleAddress});
+      await token.transfer(senders[i], 1000*i, {from: generalSaleAddress});
     }
 
     for (let i = 0; i < senders.length; i += 1) {
-      initialSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
-      initialRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
-      await sut.transfer(...Object.values(transfers[i]), {from: senders[i]});
+      initialSenderBalances.push(new BigNumber(await token.balanceOf(senders[i])));
+      initialRecipientBalances.push(new BigNumber(await token.balanceOf(recipients[i])));
+      await token.transfer(...Object.values(transfers[i]), {from: senders[i]});
     }
 
     for (let i = 0; i < senders.length; i += 1) {
-      finalSenderBalances.push(new BigNumber(await sut.balanceOf(senders[i])));
-      finalRecipientBalances.push(new BigNumber(await sut.balanceOf(recipients[i])));
+      finalSenderBalances.push(new BigNumber(await token.balanceOf(senders[i])));
+      finalRecipientBalances.push(new BigNumber(await token.balanceOf(recipients[i])));
     }
     for (let i = 0; i < senders.length; i += 1) {
       initialSenderBalances[i].should.be.bignumber.equal(finalSenderBalances[i].plus(transfers[i].value), 'Wallet' +  i + ' balance decreased by transfer value');
@@ -180,8 +181,8 @@ contract('SBIToken', function (accounts) {
   };
 
   const checkTransferFromAndApprovalEvents = async (account1, account2, account3) => {
-    var watcher = sut.Transfer();
-    var approvalWatcher = sut.Approval();
+    var watcher = token.Transfer();
+    var approvalWatcher = token.Approval();
 
     const sender = account1;
     const owner = account2;
@@ -200,7 +201,7 @@ contract('SBIToken', function (accounts) {
       value: 100
     };
 
-    await sut.approve(...Object.values(approve), {from: owner});
+    await token.approve(...Object.values(approve), {from: owner});
     const approvalOutput = approvalWatcher.get();
 
     // Verify number of Approval event arguments, their names, and content
@@ -222,7 +223,7 @@ contract('SBIToken', function (accounts) {
     arg03Value.should.be.bignumber.equal(transfer.value, 'Transfer event value');
 
 
-    await sut.transferFrom(...Object.values(transfer), {from: sender});
+    await token.transferFrom(...Object.values(transfer), {from: sender});
     const output = watcher.get();
 
     // Verify number of Transfer event arguments, their names, and content
@@ -245,7 +246,7 @@ contract('SBIToken', function (accounts) {
   };
 
   const checkTransferEvents = async (account1, account2) => {
-    const watcher = sut.Transfer();
+    const watcher = token.Transfer();
 
     const sender1 = account1;
     const recipient1 = account2;
@@ -254,7 +255,7 @@ contract('SBIToken', function (accounts) {
       value: 1
     };
 
-    await sut.transfer(...Object.values(transfer1), {from: sender1});
+    await token.transfer(...Object.values(transfer1), {from: sender1});
     const output = watcher.get();
 
     const eventArguments = output[0].args;
