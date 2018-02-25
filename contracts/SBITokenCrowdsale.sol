@@ -387,7 +387,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         // Check that stage wallet has enough tokens. If not, sell the rest and
         // return change.
         uint remainingTokenBalance = token.balanceOf(saleWalletAddress) / tokenMultiplier;
-        if (remainingTokenBalance < tokenAmount) {
+        if (remainingTokenBalance <= tokenAmount) {
             tokenAmount = remainingTokenBalance;
             goalReached = true;
         }
@@ -415,7 +415,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     }
 
     /**
-    *  Transfer ETH amount from contract to owner's address.
+    *  Transfer ETH amount from contract to bank's address.
     *  Can only be used if ICO is closed
     *
     * @param amount - ETH amount to transfer in Wei

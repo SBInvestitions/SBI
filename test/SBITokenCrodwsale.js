@@ -24,7 +24,7 @@ contract('SBITokenCrowdsale', function (accounts) {
     generalSaleStartDate: new Date('2018-03-05T00:00+00:00').getTime() / 1000, // March 5, 2018
     generalSaleEndDate: new Date('2018-06-05T00:00+00:00').getTime() / 1000, // June 5, 2018.
     //  misc
-    weiInEth: 1e18,
+    weiInEth: 1000000000000000000,
     //  pools
     pools: [
       {
@@ -250,7 +250,9 @@ contract('SBITokenCrowdsale', function (accounts) {
 
       it("ICO goal reached: can withdrawal money", async() => {
         await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
-        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, 1);
+        const goal = await crowdsale.goalReached();
+        console.log('goal = ', goal);
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, 1, token, crowdsaleParams.pools[0].address);
       });
 
       it("ICO goal reached: can kill contract", async() => {
