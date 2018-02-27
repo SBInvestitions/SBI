@@ -272,16 +272,12 @@ contract('SBITokenCrowdsale', function (accounts) {
         await token.approveCrowdsale(crowdsale.address);
       });
 
-      it("Can withdraw money", async() => {
-        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, 1);
-      });
-
       it("Cannot withdraw money more then collected", async() => {
-        await testLib.checkWithdrawalIsDenied(crowdsaleForWithdrawal, owner, saleGoalInWei);
+        await testLib.checkWithdrawalIsDenied(crowdsale, owner, saleGoalInWei);
       });
 
       it("Only owner can withdraw money", async() => {
-        await testLib.checkWithdrawalIsDenied(crowdsaleForWithdrawal, accounts[1], 1);
+        await testLib.checkWithdrawalIsDenied(crowdsale, accounts[1], 1);
       });
 
       it('Can kill contract with no tokens on generalSaleWallet', async() => {
