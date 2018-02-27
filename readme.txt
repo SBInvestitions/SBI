@@ -6,7 +6,7 @@ The SBI project token contract and DAICO source code in [Solidity](http://solidi
 
 # Invest Technology Ltd
 
-## Install
+## start
 
 1. npm i
 2. Copy to command line information from testrpc.sh to start testrpc with params
