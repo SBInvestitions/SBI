@@ -115,6 +115,12 @@ contract('SBITokenCrowdsale', function (accounts) {
     });
   };
 
+  const bankInitialParams = (token) => {
+    return Object.values({
+      tokenAddress: token.address,
+    });
+  };
+
   // ICO goal in wei ((tokensGoal / tokensPerEth) * weiInEth)
   const saleGoalInWei = new BigNumber(crowdsaleParams.pools[0].allocationAmount).dividedBy(crowdsaleParams.tokensPerEthGeneral).times(crowdsaleParams.weiInEth);
   console.log('saleGoalInWei = ', saleGoalInWei);
@@ -126,7 +132,7 @@ contract('SBITokenCrowdsale', function (accounts) {
     before(async() => {
       // To check correct withdrawal we need to have crawsdale contract instance across different tests
       tokenForWithdrawal = await SBIToken.new({gas: 7000000});
-      bankForWithdrawal = await SBIBank.new({gas: 7000000});
+      bankForWithdrawal = await SBIBank.new(...bankInitialParams(tokenForWithdrawal));
       crowdsaleForWithdrawal = await SBITokenCrowdsale.new(...crowdSaleInitialParams(tokenForWithdrawal, bankForWithdrawal));
     });
 
@@ -136,7 +142,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       beforeEach(async function () {
         /* contrancts */
         token = await SBIToken.new({gas: 7000000});
-        bank = await SBIBank.new({gas: 7000000});
+        bank =  await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
       });
@@ -151,7 +157,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       beforeEach(async function () {
         /* contrancts */
         token = await SBIToken.new({gas: 7000000});
-        bank = await SBIBank.new({gas: 7000000});
+        bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
       });
@@ -191,12 +197,12 @@ contract('SBITokenCrowdsale', function (accounts) {
 
       before(async() => {
         await testLib.setTestRPCTime(generalSaleStartDate + 3600 * 24);
-      })
+      });
 
       beforeEach(async function () {
         /* contrancts */
         token = await SBIToken.new({gas: 7000000});
-        bank = await SBIBank.new({gas: 7000000});
+        bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
         /* sale dates */
@@ -235,31 +241,20 @@ contract('SBITokenCrowdsale', function (accounts) {
 
         it('Buy tokens and receive change', async() => {
           await testLib.checkBuyTokensWithChange(crowdsale, token, crowdsaleParams.pools[6].address, crowdsaleParams.pools[0].address, saleGoalInWei, crowdsaleParams.tokensPerEthGeneral);
-        })
+        });
       });
 
-      it('ICO is open - cannot withdrawal money', async() => {
-        await testLib.checkBuyPartOfTokens(crowdsaleForWithdrawal,
-          tokenForWithdrawal,
-          crowdsaleParams.pools[6].address,
-          crowdsaleParams.pools[0].address,
-          saleGoalInWei,
-          crowdsaleParams.tokensPerEthGeneral);
-        await testLib.checkWithdrawalIsDenied(crowdsaleForWithdrawal, owner, 1);
-      });
-
-      it("ICO goal reached: can withdrawal money", async() => {
+      it('10. Can not kill contract after generalSaleEndDate if there are funds on generalSale wallet.', async () => {
         await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
-        const goal = await crowdsale.goalReached();
-        console.log('goal = ', goal);
-        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, 1, token, crowdsaleParams.pools[0].address);
+        await testLib.killCrowdsaleNegative(crowdsale);
       });
 
-      it("ICO goal reached: can kill contract", async() => {
+      it("11. ICO goal reached: can not kill contract, can withdrawal money, then can kill contract", async() => {
         await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
+        await testLib.killCrowdsaleNegative(crowdsale);
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, web3.toWei(475.0, 'ether'));
         await testLib.killCrowdsalePositive(crowdsale);
       });
-
     });
 
     describe('> crowdsale end date', async () => {
@@ -271,19 +266,14 @@ contract('SBITokenCrowdsale', function (accounts) {
       beforeEach(async function () {
         /* contrancts */
         token = await SBIToken.new({gas: 7000000});
-        bank = await SBIBank.new({gas: 7000000});
+        bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
         await token.approveCrowdsale(crowdsale.address);
-        await tokenForWithdrawal.approveCrowdsale(crowdsaleForWithdrawal.address);
-      });
-
-      it('10. Can not kill contract after generalSaleEndDate if there are tokens on generalSale wallet.', async () => {
-        await testLib.killCrowdsaleNegative(crowdsale);
       });
 
       it("Can withdraw money", async() => {
-        await testLib.checkWithdrawalIsAllowed(crowdsaleForWithdrawal, owner, 1);
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, 1);
       });
 
       it("Cannot withdraw money more then collected", async() => {
@@ -307,7 +297,7 @@ contract('SBITokenCrowdsale', function (accounts) {
 
 async function beforeEachFunc(token, bank, crowdsale, owner) {
   token = await SBIToken.new({gas: 7000000});
-  bank = await SBIBank.new({gas: 7000000});
+  bank = await await SBIBank.new(...bankInitialParams(token));
   crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
   owner = await crowdsale.owner();
 }

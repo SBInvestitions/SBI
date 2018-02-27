@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.19;
 
 contract CrowdsaleParameters {
     ///////////////////////////////////////////////////////////////////////////
@@ -338,6 +338,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
     // investors refunded amounts of voting
     mapping(address => uint) public alreadyRefunded;
 
+    event NewIncomingFunds(uint indexed amount, address indexed sender);
     event NewVoting(uint256 indexed date, uint indexed amount);
     event NewVote(address indexed voter, uint256 indexed date, uint8 indexed proposal);
     event CancelVote(uint256 indexed date, uint indexed amount);
@@ -452,5 +453,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
   /**
    * @dev payable fallback
    */
-  function () public payable {}
+  function () external payable {
+      NewIncomingFunds(msg.value, msg.sender);
+  }
 }

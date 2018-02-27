@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.19;
 
 contract CrowdsaleParameters {
     ///////////////////////////////////////////////////////////////////////////
@@ -422,8 +422,6 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     */
     function safeWithdrawal(uint amount) external onlyOwner {
         require(this.balance >= amount);
-        require(!isICOActive());
-
         if (bank.send(amount)) {
             FundTransfer(address(this), bank, amount);
         }
@@ -432,7 +430,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     /**
     *  Default method
     *
-    *  Processes all ETH that it receives and credits TKLN tokens to sender
+    *  Processes all ETH that it receives and credits SBI tokens to sender
     *  according to current stage bonus
     */
     function () external payable {

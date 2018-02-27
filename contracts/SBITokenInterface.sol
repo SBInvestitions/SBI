@@ -1,4 +1,4 @@
-pragma solidity 0.4.18;
+pragma solidity ^0.4.19;
 
 contract FHFTokenInterface {
     /* Public parameters of the token */
@@ -15,5 +15,4 @@ contract FHFTokenInterface {
     function approve(address _spender, uint256 _value) public returns (bool success);
     function approve(address _spender, uint256 _currentValue, uint256 _value) public returns (bool success);
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success);
-    function approveCrowdsale(address _crowdsaleAddress) external;
 }
