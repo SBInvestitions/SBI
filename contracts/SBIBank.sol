@@ -326,9 +326,9 @@ contract SBIBank is Owned, CrowdsaleParameters {
     uint public allowedWithdraw = 0;
     uint public allowedRefund = 0;
 
-    uint256 public allow = 0;
-    uint256 public cancel = 0;
-    uint256 public refund = 0;
+    uint256 public toAllow = 0;
+    uint256 public toCancel = 0;
+    uint256 public toRefund = 0;
 
     // result of a voiting
     uint8 result = 0;
@@ -358,7 +358,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
    * @param _amount The amount of the funds requested to transfer.
    */
   function addVoting(uint _amount) onlyOwner public {
-    require(this.balance > _amount);
+    require(this.balance >= _amount);
     // can add only if previouse voiting closed
     require(currentVotingDate == 0 && currentVotingAmount == 0);
     currentVotingDate = now;
@@ -379,45 +379,45 @@ contract SBIBank is Owned, CrowdsaleParameters {
       alreadyRefunded[msg.sender] = 0;
       votes[msg.sender] = proposal;
       if(proposal == 1) {
-          allow.sub(token.balanceOf(msg.sender));
+          toAllow.sub(token.balanceOf(msg.sender));
       }
       if(proposal == 2) {
-          cancel.sub(token.balanceOf(msg.sender));
+          toCancel.sub(token.balanceOf(msg.sender));
       }
       if(proposal == 3) {
-          refund.sub(token.balanceOf(msg.sender));
+          toRefund.sub(token.balanceOf(msg.sender));
       }
       NewVote(msg.sender, now, proposal);
   }
 
   /**
-   * @dev End current voting with 3 scenarios - allow, cancel or refund
+   * @dev End current voting with 3 scenarios - toAllow, toCancel or toRefund
    */
   function endVote() public onlyOwner {
       require(currentVotingDate > 0 && now >= currentVotingDate + 3 days);
-      if (allow > cancel && allow > refund) {
-          // allow withdraw
-          AllowVote(currentVotingDate, allow);
+      if (toAllow > toCancel && toAllow > toRefund) {
+          // toAllow withdraw
+          AllowVote(currentVotingDate, toAllow);
           allowedWithdraw = currentVotingAmount;
           allowedRefund = 0;
       }
-      if (cancel > allow && cancel > refund) {
-          // cancel voiting
-          CancelVote(currentVotingDate, cancel);
+      if (toCancel > toAllow && toCancel > toRefund) {
+          // toCancel voiting
+          CancelVote(currentVotingDate, toCancel);
           allowedWithdraw = 0;
           allowedRefund = 0;
       }
-      if (refund > allow && refund > cancel) {
-          // cancel voiting
-          RefundVote(currentVotingDate, refund);
+      if (toRefund > toAllow && toRefund > toCancel) {
+          // toCancel voiting
+          RefundVote(currentVotingDate, toRefund);
           allowedRefund = currentVotingAmount;
           allowedWithdraw = 0;
       }
       currentVotingDate = 0;
       currentVotingAmount = 0;
-      allow = 0;
-      cancel = 0;
-      refund = 0;
+      toAllow = 0;
+      toCancel = 0;
+      toRefund = 0;
   }
 
   /**
@@ -432,7 +432,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
     }
 
   /**
-   * @dev End current voting with 3 scenarios - allow, cancel or refund
+   * @dev End current voting with 3 scenarios - toAllow, toCancel or refund
    */
   function refund() public {
       require(allowedRefund > 0);
