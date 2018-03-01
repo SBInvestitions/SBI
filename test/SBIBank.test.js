@@ -191,7 +191,7 @@ contract('SBIBank', function (accounts) {
       it('4 Balance is null. Should not be able to endVote', async function () {
         const bankBalance = await web3.eth.getBalance(bank.address);
         const endVote = async() => {
-          await bank.endVote();
+          await bank.endVoting();
         };
         await testLib.assertThrowsAsync(endVote, txRevertRegExp);
         assert.equal(bankBalance, 0, 'bankBalance amount should be zero on opening');
@@ -235,13 +235,111 @@ contract('SBIBank', function (accounts) {
         await bank.addVoting(web3.toWei(1.0, 'ether'));
         const currentVotingAmount = await bank.currentVotingAmount();
         const currentVotingDate = await bank.currentVotingDate();
+
         console.log('bankBalance = ', bankBalance.toNumber());
         console.log('currentVotingAmount = ', currentVotingAmount);
         console.log('currentVotingDate = ', currentVotingDate);
+
         assert.notEqual(currentVotingDate, null);
         assert.equal(currentVotingAmount, web3.toWei(1.0, 'ether'), 'currentVotingAmount should be 1 eth');
       });
 
+      it('8 Can not add voting twice', async function () {
+        const addVoting = async() => {
+          await bank.addVoting(web3.toWei(1.0, 'ether'));
+        };
+        await testLib.assertThrowsAsync(addVoting, txRevertRegExp);
+      });
+
+      it('9 Everyone, who has tokens, can vote', async function () {
+        const address1 = crowdsaleParams.pools[2].address;
+        const address2 = crowdsaleParams.pools[6].address;
+        const voterOneTokenBalance = await token.balanceOf(address1);
+        const voterTwoTokenBalance = await token.balanceOf(address2);
+        // await bank.vote(1);
+        await bank.vote(1, {from: address1});
+        await bank.vote(2, {from: address2});
+        // await bank.vote(2, { from: address2 });
+        const vote1 = await bank.voteOf.call(address1);
+        const vote2 = await bank.voteOf.call(address2);
+        const toAllow = await bank.toAllow();
+        const toCancel = await bank.toCancel();
+        assert.equal(vote1.toNumber(), 1, 'vote1 should be 1');
+        assert.equal(vote2.toNumber(), 2, 'vote2 should be 2');
+        assert.equal(toAllow.toNumber(), voterOneTokenBalance.toNumber(), 'toAllow should be voterOneTokenBalance');
+        assert.equal(toCancel.toNumber(), voterTwoTokenBalance.toNumber(), 'toCancel should be voterTwoTokenBalance');
+      });
+      it('10 Everyone, who has`t tokens, can`t vote', async function () {
+        const addVoting1 = async() => {
+          await bank.vote(1, { from: crowdsaleParams.pools[7].address });
+        };
+        const addVoting2 = async() => {
+          await bank.vote(3, { from: crowdsaleParams.pools[8].address });
+        };
+        await testLib.assertThrowsAsync(addVoting1, txRevertRegExp);
+        await testLib.assertThrowsAsync(addVoting2, txRevertRegExp);
+      });
+      it('11 Everyone, who has tokens, can`t vote twice', async function () {
+        const addVoting1 = async() => {
+          await bank.vote(1, { from: crowdsaleParams.pools[2].address });
+        };
+        const addVoting2 = async() => {
+          await bank.vote(3, { from: crowdsaleParams.pools[6].address });
+        };
+        await testLib.assertThrowsAsync(addVoting1, txRevertRegExp);
+        await testLib.assertThrowsAsync(addVoting2, txRevertRegExp);
+      });
+      it('12 Nobody can stop the voting before 3 days end', async function () {
+        const endVoting = async() => {
+          await bank.endVoting({ from: crowdsaleParams.pools[2].address });
+        };
+        const endVotingOwner = async() => {
+          await bank.endVoting({ from: owner });
+        };
+        await testLib.assertThrowsAsync(endVoting, txRevertRegExp);
+        await testLib.assertThrowsAsync(endVotingOwner, txRevertRegExp);
+      });
+      it('12/1', async function () {
+        const toAllow = await bank.toAllow();
+        const toCancel = await bank.toCancel();
+        const toRefund = await bank.toRefund();
+        console.log('toAllow', toAllow.toNumber());
+        console.log('toCancel', toCancel.toNumber());
+        console.log('toRefund', toRefund.toNumber());
+      });
+      it('13 Only owner can stop the voting after 3 days period ends', async function () {
+        const endVoting = async() => {
+          await bank.endVoting({ from: crowdsaleParams.pools[2].address });
+        };
+        const currentVotingDate = await bank.currentVotingDate();
+        await testLib.setTestRPCTime(currentVotingDate + 3600 * 3 + 1);
+        await testLib.assertThrowsAsync(endVoting, txRevertRegExp);
+        await bank.endVoting({ from: owner });
+        const allowedWithdraw = await bank.allowedWithdraw();
+        const allowedRefund = await bank.allowedRefund();
+        console.log('allowedWithdraw = ', allowedWithdraw.toNumber());
+        console.log('allowedRefund = ', allowedRefund.toNumber());
+        assert.equal(allowedWithdraw, 0, 'allowedWithdraw should be 0');
+        assert.equal(allowedRefund, 0, 'allowedRefund should be 0');
+      });
+      it('14 nobody can vote after the voting ends', async function () {
+        const addVoting1 = async() => {
+          await bank.vote(1, { from: crowdsaleParams.pools[2].address });
+        };
+        const addVoting2 = async() => {
+          await bank.vote(3, { from: crowdsaleParams.pools[6].address });
+        };
+        const addVoting3 = async() => {
+          await bank.vote(1, { from: crowdsaleParams.pools[3].address });
+        };
+        const addVoting4 = async() => {
+          await bank.vote(1, { from: crowdsaleParams.pools[8].address });
+        };
+        await testLib.assertThrowsAsync(addVoting1, txRevertRegExp);
+        await testLib.assertThrowsAsync(addVoting2, txRevertRegExp);
+        await testLib.assertThrowsAsync(addVoting3, txRevertRegExp);
+        await testLib.assertThrowsAsync(addVoting4, txRevertRegExp);
+      });
     });
       /*describe('Crowdsale is opened', async function () {
 

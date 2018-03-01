@@ -334,7 +334,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
     uint8 result = 0;
 
     // investors votes
-    mapping(address => uint256) public votes;
+    mapping(address => uint8) public votes;
     // investors refunded amounts of voting
     mapping(address => uint) public alreadyRefunded;
 
@@ -357,7 +357,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
    * @dev Start a new voting.
    * @param _amount The amount of the funds requested to transfer.
    */
-  function addVoting(uint _amount) onlyOwner public {
+  function addVoting(uint _amount) public onlyOwner {
     require(this.balance >= _amount);
     // can add only if previouse voiting closed
     require(currentVotingDate == 0 && currentVotingAmount == 0);
@@ -365,35 +365,43 @@ contract SBIBank is Owned, CrowdsaleParameters {
     currentVotingAmount = _amount;
     NewVoting(now, _amount);
   }
+  /*
+    returns current vote of investor
+  */
+  function voteOf(address voter) public constant returns (uint8 vote) {
+    return votes[voter];
+  }
 
    /**
    * @dev vote for only sbi tokens owners
    */
-  function vote(uint8 proposal) public payable {
+  function vote(uint8 proposal) public returns(uint8 prop) {
       require(token.balanceOf(msg.sender) > 0);
-      require(now > currentVotingDate && now <= currentVotingDate + 3 days);
+      require(now >= currentVotingDate && now <= currentVotingDate + 3 days);
       require(proposal == 1 || proposal == 2 || proposal == 3);
       // you can vote only once for current voiting
-      require(votes[msg.sender] == 0);
+      require(votes[msg.sender] != 1 && votes[msg.sender] != 2 && votes[msg.sender] != 3);
 
       alreadyRefunded[msg.sender] = 0;
       votes[msg.sender] = proposal;
+
       if(proposal == 1) {
-          toAllow.sub(token.balanceOf(msg.sender));
+          toAllow = toAllow + token.balanceOf(msg.sender);
       }
       if(proposal == 2) {
-          toCancel.sub(token.balanceOf(msg.sender));
+          toCancel = toCancel + token.balanceOf(msg.sender);
       }
       if(proposal == 3) {
-          toRefund.sub(token.balanceOf(msg.sender));
+          toRefund = toRefund + token.balanceOf(msg.sender);
       }
       NewVote(msg.sender, now, proposal);
+      return proposal;
   }
 
   /**
    * @dev End current voting with 3 scenarios - toAllow, toCancel or toRefund
    */
-  function endVote() public onlyOwner {
+  function endVoting() public onlyOwner {
       require(currentVotingDate > 0 && now >= currentVotingDate + 3 days);
       if (toAllow > toCancel && toAllow > toRefund) {
           // toAllow withdraw
