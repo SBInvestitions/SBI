@@ -335,6 +335,8 @@ contract SBIBank is Owned, CrowdsaleParameters {
 
     // investors votes
     mapping(address => uint8) public votes;
+    // investors votes dates
+    mapping(address => uint256) public voteDates;
     // investors refunded amounts of voting
     mapping(address => uint) public alreadyRefunded;
 
@@ -380,10 +382,11 @@ contract SBIBank is Owned, CrowdsaleParameters {
       require(now >= currentVotingDate && now <= currentVotingDate + 3 days);
       require(proposal == 1 || proposal == 2 || proposal == 3);
       // you can vote only once for current voiting
-      require(votes[msg.sender] != 1 && votes[msg.sender] != 2 && votes[msg.sender] != 3);
+      require(voteDates[msg.sender] != currentVotingDate);
 
       alreadyRefunded[msg.sender] = 0;
       votes[msg.sender] = proposal;
+      voteDates[msg.sender] = currentVotingDate;
 
       if(proposal == 1) {
           toAllow = toAllow + token.balanceOf(msg.sender);
