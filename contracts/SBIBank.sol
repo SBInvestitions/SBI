@@ -210,10 +210,8 @@ contract SBIToken is Owned, CrowdsaleParameters {
     */
 
     function transfer(address _to, uint256 _value) public transfersAllowed onlyPayloadSize(2*32) returns (bool success) {
-
         require(_to != address(0));
         require(_value <= balances[msg.sender]);
-
         balances[msg.sender] = balances[msg.sender].sub(_value);
         balances[_to] = balances[_to].add(_value);
         Transfer(msg.sender, _to, _value);
@@ -251,21 +249,6 @@ contract SBIToken is Owned, CrowdsaleParameters {
         require(_value == 0 || allowanceUsed[msg.sender][_spender] == false);
         allowed[msg.sender][_spender] = _value;
         allowanceUsed[msg.sender][_spender] = false;
-        Approval(msg.sender, _spender, _value);
-        return true;
-    }
-
-    /**
-    *  Allow another contract to spend some tokens on your behalf
-    *
-    * @param _spender - address to allocate tokens for
-    * @param _currentValue - current number of tokens approved for allocation
-    * @param _value - number of tokens to allocate
-    * @return True in case of success, otherwise false
-    */
-    function approve(address _spender, uint256 _currentValue, uint256 _value) public onlyPayloadSize(3*32) returns (bool success) {
-        require(allowed[msg.sender][_spender] == _currentValue);
-        allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
         return true;
     }
@@ -311,11 +294,11 @@ contract SBIToken is Owned, CrowdsaleParameters {
 }
 
 
-
 /**
  * @title SBIBank
- * @dev Base contract that supports multiple payees claiming funds sent to this contract
- * according to the sbi tokens proportions they own.
+ * @dev Bank contract that supports voting to withdraw money, cancel or refund
+ * multiple payees claiming funds sent to this contract
+ * according to the sbi tokens proportions they own and result of voting.
  */
 
 contract SBIBank is Owned, CrowdsaleParameters {
@@ -338,7 +321,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
     // investors votes dates
     mapping(address => uint256) public voteDates;
     // investors refunded amounts of voting
-    mapping(address => uint) public alreadyRefunded;
+    mapping(address => uint256) public alreadyRefunded;
 
     event NewIncomingFunds(uint indexed amount, address indexed sender);
     event NewVoting(uint256 indexed date, uint indexed amount);
@@ -346,7 +329,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
     event CancelVote(uint256 indexed date, uint indexed amount);
     event AllowVote(uint256 indexed date, uint indexed amount);
     event RefundVote(uint256 indexed date, uint indexed amount);
-    event Refund(uint256 indexed date, uint indexed amount, address indexed investor);
+    event Refund(uint256 indexed date, uint256 indexed amount, address indexed investor);
     event Withdraw(uint256 indexed date, uint indexed amount);
   /**
    * @dev Constructor
@@ -440,7 +423,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
       owner.transfer(allowedWithdraw);
       Withdraw(now, allowedWithdraw);
       allowedWithdraw = 0;
-    }
+  }
 
   /**
    * @dev End current voting with 3 scenarios - toAllow, toCancel or refund
@@ -451,12 +434,12 @@ contract SBIBank is Owned, CrowdsaleParameters {
       require(alreadyRefunded[msg.sender] == 0);
       require(token.balanceOf(msg.sender) > 0);
       // total supply tokens is 40 000 000
-      uint tokensPercent = token.balanceOf(msg.sender).div(40000000);
-      uint refundedAmount = tokensPercent.mul(allowedRefund);
-      uint refundedPercent = refundedAmount.div(this.balance);
-      msg.sender.transfer(refundedAmount);
-      uint refundedTokens = token.balanceOf(msg.sender).mul(refundedPercent);
-      token.transfer(featureDevelopment.addr, refundedTokens);
+      uint256 tokensPercent = token.balanceOf(msg.sender).div(40000000).div(1000000000000000);
+      uint256 refundedAmount = tokensPercent.mul(allowedRefund).div(1000);
+      address sender = msg.sender;
+      uint256 refundedTokens = token.balanceOf(msg.sender).mul(tokensPercent).div(1000);
+      token.transferFrom(msg.sender, featureDevelopment.addr, refundedTokens);
+      sender.transfer(refundedAmount);
       alreadyRefunded[msg.sender] = refundedAmount;
       Refund(now, refundedAmount, msg.sender);
   }

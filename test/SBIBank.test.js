@@ -236,9 +236,9 @@ contract('SBIBank', function (accounts) {
         const currentVotingAmount = await bank.currentVotingAmount();
         const currentVotingDate = await bank.currentVotingDate();
 
-        console.log('bankBalance = ', bankBalance.toNumber());
+        /*console.log('bankBalance = ', bankBalance.toNumber());
         console.log('currentVotingAmount = ', currentVotingAmount);
-        console.log('currentVotingDate = ', currentVotingDate);
+        console.log('currentVotingDate = ', currentVotingDate);*/
 
         assert.notEqual(currentVotingDate, null);
         assert.equal(currentVotingAmount, web3.toWei(1.0, 'ether'), 'currentVotingAmount should be 1 eth');
@@ -317,8 +317,8 @@ contract('SBIBank', function (accounts) {
         await bank.endVoting({ from: owner });
         const allowedWithdraw = await bank.allowedWithdraw();
         const allowedRefund = await bank.allowedRefund();
-        console.log('allowedWithdraw = ', allowedWithdraw.toNumber());
-        console.log('allowedRefund = ', allowedRefund.toNumber());
+        //console.log('allowedWithdraw = ', allowedWithdraw.toNumber());
+        //console.log('allowedRefund = ', allowedRefund.toNumber());
         assert.equal(allowedWithdraw, 0, 'allowedWithdraw should be 0');
         assert.equal(allowedRefund, 0, 'allowedRefund should be 0');
       });
@@ -345,16 +345,16 @@ contract('SBIBank', function (accounts) {
         // crowdsaleParams.pools[6].address - buyer of tokens
 
         const bankBalance = await web3.eth.getBalance(bank.address);
-        console.log('bankBalance = ', bankBalance.toNumber());
+        //console.log('bankBalance = ', bankBalance.toNumber());
 
         await bank.addVoting(web3.toWei(3.0, 'ether'));
         const currentVotingAmount = await bank.currentVotingAmount();
         const currentVotingDate = await bank.currentVotingDate();
         const senderBalance = await token.balanceOf(crowdsaleParams.pools[9].address);
 
-        console.log('senderBalance = ', senderBalance.toNumber());
+        /*console.log('senderBalance = ', senderBalance.toNumber());
         console.log('currentVotingAmount = ', currentVotingAmount);
-        console.log('currentVotingDate = ', currentVotingDate);
+        console.log('currentVotingDate = ', currentVotingDate);*/
 
         assert.equal(bankBalance.toNumber(), web3.toWei(4.0, 'ether'), 'Bank balance not null');
         assert.equal(currentVotingAmount, web3.toWei(3.0, 'ether'), 'currentVotingAmount should be 3 eth');
@@ -379,7 +379,7 @@ contract('SBIBank', function (accounts) {
         assert.equal(toCancel.toNumber(), voterTwoTokenBalance.toNumber(), 'toCancel should be voterTwoTokenBalance');
 
         // and can`t vote twice
-        console.log('and can`t vote twice');
+        // console.log('and can`t vote twice');
         const addVoting1 = async() => {
           await bank.vote(1, { from: crowdsaleParams.pools[1].address });
         };
@@ -405,12 +405,12 @@ contract('SBIBank', function (accounts) {
         const allowedWithdraw = await bank.allowedWithdraw();
         const allowedRefund = await bank.allowedRefund();
 
-        console.log('bankBalanceBefore', bankBalanceBefore.toNumber());
+        /*console.log('bankBalanceBefore', bankBalanceBefore.toNumber());
         console.log('ownerBalanceBefore', ownerBalanceBefore.toNumber());
         console.log('bankBalanceAfter', bankBalanceAfter.toNumber());
         console.log('ownerBalanceAfter', ownerBalanceAfter.toNumber());
         console.log('allowedWithdraw', allowedWithdraw.toNumber());
-        console.log('allowedRefund', allowedRefund.toNumber());
+        console.log('allowedRefund', allowedRefund.toNumber());*/
 
         assert.equal(bankBalanceBefore.toNumber(), web3.toWei(4.0, 'ether'), 'bankBalanceAfter should be 4 eth');
         assert.equal(allowedWithdraw.toNumber(), 0, 'allowedWithdraw should be 0');
@@ -418,7 +418,7 @@ contract('SBIBank', function (accounts) {
       });
     });
 
-    /*describe('Allow withdraw', async () => {
+    describe('Allow withdraw', async () => {
 
       before(async() => {
         token = await SBIToken.new({gas: 7000000});
@@ -502,8 +502,8 @@ contract('SBIBank', function (accounts) {
         const voterOneTokenBalance = await token.balanceOf(address1);
         const voterTwoTokenBalance = await token.balanceOf(address2);
 
-        /!*console.log('voterOneTokenBalance', voterOneTokenBalance.toNumber());
-        console.log('voterTwoTokenBalance', voterTwoTokenBalance.toNumber());*!/
+        /*console.log('voterOneTokenBalance', voterOneTokenBalance.toNumber());
+        console.log('voterTwoTokenBalance', voterTwoTokenBalance.toNumber());*/
 
         const tryVote1 = async() => {
           await bank.vote(3, {from: address1});
@@ -522,12 +522,12 @@ contract('SBIBank', function (accounts) {
         const toCancel = await bank.toCancel();
         const toRefund = await bank.toRefund();
 
-        /!*console.log('toAllow', toAllow.toNumber());
+        /*console.log('toAllow', toAllow.toNumber());
         console.log('toCancel', toCancel.toNumber());
         console.log('toRefund', toRefund.toNumber());
 
         console.log('vote1.toNumber()', vote1.toNumber());
-        console.log('vote2.toNumber()', vote2.toNumber());*!/
+        console.log('vote2.toNumber()', vote2.toNumber());*/
 
         assert.equal(vote1.toNumber(), 3, 'vote1 should be 3');
         assert.equal(vote2.toNumber(), 1, 'vote2 should be 1');
@@ -553,6 +553,154 @@ contract('SBIBank', function (accounts) {
         assert.equal(bankBalanceBefore.toNumber(), bankBalanceAfter.toNumber() + web3.toWei(475.0, 'ether'), 'bankBalanceAfter should be bankBalanceBefore + 475 eth');
         assert.equal(ownerBalanceAfter.minus(ownerBalanceBefore).plus(testLib.getLatestBlockCost(gasPrice)).toNumber(), web3.toWei(475.0, 'ether'),'ownerBalanceAfter should be ownerBalanceBefore + 475 eth');
       });
-    });*/
+    });
+
+    describe('Allow refund', async () => {
+
+      before(async() => {
+        token = await SBIToken.new({gas: 7000000});
+        bank = await SBIBank.new(...bankInitialParams(token));
+        crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
+        owner = await crowdsale.owner();
+        await token.approveCrowdsale(crowdsale.address);
+        await testLib.setTestRPCTime(generalSaleStartDate + 3600 * 24);
+      });
+
+      it('1 Buy twice and add voting.', async function () {
+        // crowdsaleParams.pools[6].address - buyer of tokens
+        const amountToBuyInWei = new BigNumber(saleGoalInWei).dividedBy(2);
+        const amountToBuyInTokens = new BigNumber(amountToBuyInWei).times(crowdsaleParams.tokensPerEthGeneral);
+        await testLib.checkBuyTokens(crowdsale, token, crowdsaleParams.pools[10].address, crowdsaleParams.pools[0].address, amountToBuyInWei, amountToBuyInWei, amountToBuyInTokens, false);
+        await testLib.checkBuyTokens(crowdsale, token, crowdsaleParams.pools[11].address, crowdsaleParams.pools[0].address, amountToBuyInWei, amountToBuyInWei, amountToBuyInTokens, true);
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, web3.toWei(200.0, 'ether'));
+        await bank.addVoting(web3.toWei(200.0, 'ether'));
+        const currentVotingAmount = await bank.currentVotingAmount();
+        const currentVotingDate = await bank.currentVotingDate();
+        assert.notEqual(currentVotingDate, null);
+        assert.equal(currentVotingAmount, web3.toWei(200.0, 'ether'), 'currentVotingAmount should be 475 eth');
+      });
+
+      it('2 Vote', async function () {
+        const address1 = crowdsaleParams.pools[10].address;
+        const address2 = crowdsaleParams.pools[11].address;
+        const address3 = crowdsaleParams.pools[1].address;
+        const address4 = crowdsaleParams.pools[2].address;
+        const address5 = crowdsaleParams.pools[3].address;
+        const voterOneTokenBalance = await token.balanceOf(address1);
+        const voterTwoTokenBalance = await token.balanceOf(address2);
+        const voterThreeTokenBalance = await token.balanceOf(address3);
+        const voterFourTokenBalance = await token.balanceOf(address4);
+        const voterFiveTokenBalance = await token.balanceOf(address5);
+        console.log('voterOneTokenBalance', voterOneTokenBalance.toNumber());
+        console.log('voterTwoTokenBalance', voterTwoTokenBalance.toNumber());
+        console.log('voterThreeTokenBalance', voterThreeTokenBalance.toNumber());
+        console.log('voterFourTokenBalance', voterFourTokenBalance.toNumber());
+        console.log('voterFiveTokenBalance', voterFiveTokenBalance.toNumber());
+
+        await bank.vote(3, {from: address1});
+        await bank.vote(3, {from: address2});
+        await bank.vote(1, {from: address3});
+        await bank.vote(1, {from: address4});
+        await bank.vote(1, {from: address5});
+
+        // await bank.vote(2, { from: address2 });
+        const vote1 = await bank.voteOf.call(address1);
+        const vote2 = await bank.voteOf.call(address2);
+        const vote3 = await bank.voteOf.call(address3);
+        const vote4 = await bank.voteOf.call(address4);
+        const vote5 = await bank.voteOf.call(address5);
+        const toAllow = await bank.toAllow();
+        const toCancel = await bank.toCancel();
+        const toRefund = await bank.toRefund();
+
+        console.log('toAllow', toAllow.toNumber());
+        console.log('toCancel', toCancel.toNumber());
+        console.log('toRefund', toRefund.toNumber());
+
+        assert.equal(vote1.toNumber(), 3, 'vote1 should be 3');
+        assert.equal(vote2.toNumber(), 3, 'vote2 should be 3');
+        assert.equal(vote3.toNumber(), 1, 'vote3 should be 1');
+        assert.equal(vote4.toNumber(), 1, 'vote4 should be 1');
+        assert.equal(vote5.toNumber(), 1, 'vote5 should be 1');
+        assert.equal(toRefund.toNumber(), 22800000 * (10 ** 18), 'toRefund should be voterOneTokenBalance');
+        assert.equal(toCancel.toNumber(), 0, 'toCancel should be voterOneTokenBalance');
+        assert.equal(toAllow.toNumber(), 17200000 * (10 ** 18), 'toCancel should be voterTwoTokenBalance');
+      });
+
+      it('3 Stop the voting', async function () {
+        const endVoting = async() => {
+          await bank.endVoting({ from: owner });
+        };
+        await testLib.assertThrowsAsync(endVoting, txRevertRegExp);
+        const currentVotingDate = await bank.currentVotingDate();
+        await testLib.setTestRPCTime(currentVotingDate + 3600 * 3 + 1);
+        await bank.endVoting({ from: owner });
+        const allowedWithdraw = await bank.allowedWithdraw();
+        const allowedRefund = await bank.allowedRefund();
+
+        /*console.log('allowedWithdraw = ', allowedWithdraw.toNumber());
+        console.log('allowedRefund = ', allowedRefund.toNumber());*/
+
+        assert.equal(allowedRefund, web3.toWei(200.0, 'ether'), 'allowedRefund should be 0');
+        assert.equal(allowedWithdraw, 0, 'allowedWithdraw should be 0');
+      });
+
+      it('4 Can`t vote after stop the voting', async function () {
+        const address1 = crowdsaleParams.pools[3].address;
+        const address2 = crowdsaleParams.pools[9].address;
+        const tryVote1 = async() => {
+          await bank.vote(3, {from: address1});
+        };
+        const tryVote2 = async() => {
+          await bank.vote(1, {from: address2});
+        };
+        await testLib.assertThrowsAsync(tryVote1, txRevertRegExp);
+        await testLib.assertThrowsAsync(tryVote2, txRevertRegExp);
+      });
+
+      it('5 Refund', async function () {
+        const gasPrice = 100000;
+        const gasLimit = 20e9;
+        const watcher = bank.Refund();
+        const bankBalanceBefore = await web3.eth.getBalance(bank.address);
+        const investorsTokenBalanceBefore = await token.balanceOf(crowdsaleParams.pools[10].address);
+        const tokenDiff = web3.toWei(3249000.0, 'ether');
+        const approve = {
+          spender: bank.address,
+          value: tokenDiff
+        };
+        // should approve transfer from investor address to bank address
+        await token.approve(...Object.values(approve), { from: crowdsaleParams.pools[10].address });
+        const featureDevelopmentBalanceBefore = await token.balanceOf(crowdsaleParams.pools[4].address);
+        await bank.refund({ from: crowdsaleParams.pools[10].address, gasLimit: gasLimit, gasPrice: gasPrice });
+        const output = watcher.get();
+        const eventArguments = output[0].args;
+        const arg1Name = Object.keys(eventArguments)[1];
+        const arg1Value = eventArguments[arg1Name];
+        const bankBalanceAfter = await web3.eth.getBalance(bank.address);
+        const investorsTokenBalanceAfter = await token.balanceOf(crowdsaleParams.pools[10].address);
+        const featureDevelopmentBalanceAfter = await token.balanceOf(crowdsaleParams.pools[4].address);
+        assert.equal(investorsTokenBalanceBefore.toNumber(), investorsTokenBalanceAfter.plus(tokenDiff).toNumber(), 'investor token balance wrong');
+        assert.equal(featureDevelopmentBalanceBefore.toNumber(), featureDevelopmentBalanceAfter.minus(tokenDiff).toNumber(), 'feature address balance wrong');
+        assert.equal(arg1Value.toNumber(), web3.toWei(57.0, 'ether'), 'eth to refund should be 57');
+        assert.equal(bankBalanceBefore.toNumber(), bankBalanceAfter.plus(web3.toWei(57.0, 'ether')).toNumber(), 'bankBalanceAfter should be bankBalanceBefore + 57 eth');
+      });
+
+      it('6 try Refund again', async function () {
+        const gasPrice = 100000;
+        const gasLimit = 20e9;
+        const tokenDiff = web3.toWei(3249000.0, 'ether');
+        const approve = {
+          spender: bank.address,
+          value: tokenDiff
+        };
+        // should approve transfer from investor address to bank address
+        await token.approve(...Object.values(approve), { from: crowdsaleParams.pools[10].address });
+        const tryRefund = async() => {
+          await bank.refund({ from: crowdsaleParams.pools[10].address, gasLimit: gasLimit, gasPrice: gasPrice });
+        };
+        await testLib.assertThrowsAsync(tryRefund, txRevertRegExp);
+      });
+    });
   });
 });

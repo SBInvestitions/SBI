@@ -211,10 +211,8 @@ contract SBIToken is Owned, CrowdsaleParameters {
     */
 
     function transfer(address _to, uint256 _value) public transfersAllowed onlyPayloadSize(2*32) returns (bool success) {
-
         require(_to != address(0));
         require(_value <= balances[msg.sender]);
-
         balances[msg.sender] = balances[msg.sender].sub(_value);
         balances[_to] = balances[_to].add(_value);
         Transfer(msg.sender, _to, _value);
@@ -252,21 +250,6 @@ contract SBIToken is Owned, CrowdsaleParameters {
         require(_value == 0 || allowanceUsed[msg.sender][_spender] == false);
         allowed[msg.sender][_spender] = _value;
         allowanceUsed[msg.sender][_spender] = false;
-        Approval(msg.sender, _spender, _value);
-        return true;
-    }
-
-    /**
-    *  Allow another contract to spend some tokens on your behalf
-    *
-    * @param _spender - address to allocate tokens for
-    * @param _currentValue - current number of tokens approved for allocation
-    * @param _value - number of tokens to allocate
-    * @return True in case of success, otherwise false
-    */
-    function approve(address _spender, uint256 _currentValue, uint256 _value) public onlyPayloadSize(3*32) returns (bool success) {
-        require(allowed[msg.sender][_spender] == _currentValue);
-        allowed[msg.sender][_spender] = _value;
         Approval(msg.sender, _spender, _value);
         return true;
     }
@@ -310,7 +293,6 @@ contract SBIToken is Owned, CrowdsaleParameters {
         transfersEnabled = _enable;
     }
 }
-
 
 contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
