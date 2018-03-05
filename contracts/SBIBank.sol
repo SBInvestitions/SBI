@@ -435,10 +435,9 @@ contract SBIBank is Owned, CrowdsaleParameters {
       require(token.balanceOf(msg.sender) > 0);
       // total supply tokens is 40 000 000
       uint256 tokensPercent = token.balanceOf(msg.sender).div(40000000).div(1000000000000000);
-      uint256 refundedAmount = tokensPercent.mul(allowedRefund).div(1000);
+      uint256 refundedAmount = tokensPercent.mul(this.balance).div(1000);
       address sender = msg.sender;
-      uint256 refundedTokens = token.balanceOf(msg.sender).mul(tokensPercent).div(1000);
-      token.transferFrom(msg.sender, featureDevelopment.addr, refundedTokens);
+      token.transferFrom(msg.sender, featureDevelopment.addr, token.balanceOf(msg.sender));
       sender.transfer(refundedAmount);
       alreadyRefunded[msg.sender] = refundedAmount;
       Refund(now, refundedAmount, msg.sender);
