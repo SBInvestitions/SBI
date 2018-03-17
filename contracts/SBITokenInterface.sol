@@ -3,7 +3,7 @@ pragma solidity ^0.4.19;
 contract FHFTokenInterface {
     /* Public parameters of the token */
     string public standard = 'Token 0.1';
-    string public name = 'Suboil Blockchain investitions';
+    string public name = 'Subsoil Blockchain investitions';
     string public symbol = 'SBI';
     uint8 public decimals = 18;
 

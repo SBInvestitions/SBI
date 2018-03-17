@@ -1,5 +1,5 @@
 
-# First Russian DaICO Project For Hi-yield SubOil Investments
+# First Russian DaICO Project For Hi-yield Subsoil Investments
 
 # Contract
 The SBI project token contract and DAICO source code in [Solidity](http://solidity.readthedocs.io/en/latest/).

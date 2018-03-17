@@ -114,7 +114,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
     /* Public variables of the token */
     string public standard = 'Token 0.1';
-    string public name = 'Suboil Blockchain investitions';
+    string public name = 'Subsoil Blockchain investitions';
     string public symbol = 'SBI';
     uint8 public decimals = 18;
 
