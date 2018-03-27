@@ -6,11 +6,11 @@ contract CrowdsaleParameters {
     ///////////////////////////////////////////////////////////////////////////
 
     // ICO period timestamps:
-    // 1520208000 = March 5, 2018.
-    // 1528156800 = June 5, 2018.
+    // 1524182400 = April 20, 2018.
+    // 1529452800 = June 20, 2018.
 
-    uint256 public constant generalSaleStartDate = 1520208000;
-    uint256 public constant generalSaleEndDate = 1528156800;
+    uint256 public constant generalSaleStartDate = 1524182400;
+    uint256 public constant generalSaleEndDate = 1529452800;
 
     ///////////////////////////////////////////////////////////////////////////
     // QA Config
@@ -32,6 +32,7 @@ contract CrowdsaleParameters {
     AddressTokenAllocation internal team = AddressTokenAllocation(0xd3b6B8528841C1c9a63FFA38D96785C32E004fA5, 12000000);
     AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0xa83202b9346d9Fa846f1B0b3BB0AaDAbEa88908E, 0);
 }
+
 
 contract Owned {
     address public owner;
@@ -293,7 +294,6 @@ contract SBIToken is Owned, CrowdsaleParameters {
     }
 }
 
-
 /**
  * @title SBIBank
  * @dev Bank contract that supports voting to withdraw money, cancel or refund
@@ -315,6 +315,8 @@ contract SBIBank is Owned, CrowdsaleParameters {
 
     // result of a voiting
     uint8 result = 0;
+
+    address sbiBank = this;
 
     // investors votes
     mapping(address => uint8) public votes;
@@ -343,7 +345,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
    * @param _amount The amount of the funds requested to transfer.
    */
   function addVoting(uint _amount) public onlyOwner {
-    require(this.balance >= _amount);
+    require(sbiBank.balance >= _amount);
     // can add only if previouse voiting closed
     require(currentVotingDate == 0 && currentVotingAmount == 0);
     currentVotingDate = now;
@@ -435,7 +437,7 @@ contract SBIBank is Owned, CrowdsaleParameters {
       require(token.balanceOf(msg.sender) > 0);
       // total supply tokens is 40 000 000
       uint256 tokensPercent = token.balanceOf(msg.sender).div(40000000).div(1000000000000000);
-      uint256 refundedAmount = tokensPercent.mul(this.balance).div(1000);
+      uint256 refundedAmount = tokensPercent.mul(sbiBank.balance).div(1000);
       address sender = msg.sender;
       token.transferFrom(msg.sender, featureDevelopment.addr, token.balanceOf(msg.sender));
       sender.transfer(refundedAmount);

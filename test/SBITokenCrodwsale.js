@@ -21,8 +21,8 @@ contract('SBITokenCrowdsale', function (accounts) {
     //  prices
     tokensPerEthGeneral: 48000,
     //  dates
-    generalSaleStartDate: new Date('2018-03-05T00:00+00:00').getTime() / 1000, // March 5, 2018
-    generalSaleEndDate: new Date('2018-06-05T00:00+00:00').getTime() / 1000, // June 5, 2018.
+    generalSaleStartDate: new Date('2018-04-20T00:00+00:00').getTime() / 1000, // April 20, 2018
+    generalSaleEndDate: new Date('2018-06-20T00:00+00:00').getTime() / 1000, // June 20, 2018.
     //  misc
     weiInEth: 1000000000000000000,
     //  pools
@@ -105,8 +105,8 @@ contract('SBITokenCrowdsale', function (accounts) {
   let bankForWithdrawal;
 
   /* sale dates */
-  const generalSaleStartDate = 1520208000;
-  const generalSaleEndDate = 1528156800;
+  const generalSaleStartDate = 1524182400;
+  const generalSaleEndDate = 1529452800;
 
   const crowdSaleInitialParams = (token, bank) => {
     return Object.values({

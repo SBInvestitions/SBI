@@ -6,11 +6,11 @@ contract CrowdsaleParameters {
     ///////////////////////////////////////////////////////////////////////////
 
     // ICO period timestamps:
-    // 1520208000 = March 5, 2018.
-    // 1528156800 = June 5, 2018.
+    // 1524182400 = April 20, 2018.
+    // 1529452800 = June 20, 2018.
 
-    uint256 public constant generalSaleStartDate = 1520208000;
-    uint256 public constant generalSaleEndDate = 1528156800;
+    uint256 public constant generalSaleStartDate = 1524182400;
+    uint256 public constant generalSaleEndDate = 1529452800;
 
     ///////////////////////////////////////////////////////////////////////////
     // QA Config

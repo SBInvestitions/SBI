@@ -31,8 +31,8 @@ contract('SBIToken', function (accounts) {
       BigNumber.config({ DECIMAL_PLACES: 18, ROUNDING_MODE: BigNumber.ROUND_DOWN });
       // Provide 10M gas for token deployment. As of Nov-16-17, this is 0.001 ETH == $0.30
       token = await SBIToken.new({gas: 10000000});
-      generalSaleStartDate = '1520208000';
-      generalSaleEndDate = '1528156800';
+      generalSaleStartDate = '1524182400';
+      generalSaleEndDate = '1529452800';
       // generalSaleEndDate = (await token.generalSaleEndDate()).toNumber();
     });
 

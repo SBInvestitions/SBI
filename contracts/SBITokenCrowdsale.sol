@@ -6,11 +6,11 @@ contract CrowdsaleParameters {
     ///////////////////////////////////////////////////////////////////////////
 
     // ICO period timestamps:
-    // 1520208000 = March 5, 2018.
-    // 1528156800 = June 5, 2018.
+    // 1524182400 = April 20, 2018.
+    // 1529452800 = June 20, 2018.
 
-    uint256 public constant generalSaleStartDate = 1520208000;
-    uint256 public constant generalSaleEndDate = 1528156800;
+    uint256 public constant generalSaleStartDate = 1524182400;
+    uint256 public constant generalSaleEndDate = 1529452800;
 
     ///////////////////////////////////////////////////////////////////////////
     // QA Config
@@ -308,6 +308,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     bool public goalReached = false;
     uint public tokensPerEth = 48000;
     mapping (address => uint256) private investmentRecords;
+    address crowdsaleAddress = this;
 
     /* Events */
     event TokenSale(address indexed tokenReceiver, uint indexed etherAmount, uint indexed tokenAmount, uint tokensPerEther);
@@ -385,10 +386,8 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         // Return change
         uint change = amount - acceptedAmount;
         if (change > 0) {
-            if (investorAddress.send(change)) {
-                FundTransfer(address(this), investorAddress, change);
-            }
-            else revert();
+            investorAddress.transfer(change);
+            FundTransfer(address(this), investorAddress, change);
         }
 
         // Update crowdsale performance
@@ -398,15 +397,13 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
 
     /**
     *  Transfer ETH amount from contract to bank's address.
-    *  Can only be used if ICO is closed
     *
     * @param amount - ETH amount to transfer in Wei
     */
     function safeWithdrawal(uint amount) external onlyOwner {
-        require(this.balance >= amount);
-        if (bank.send(amount)) {
-            FundTransfer(address(this), bank, amount);
-        }
+        require(crowdsaleAddress.balance >= amount);
+        bank.transfer(amount);
+        FundTransfer(crowdsaleAddress, bank, amount);
     }
 
     /**
@@ -426,7 +423,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     */
     function kill() external onlyOwner {
         require(!isICOActive());
-        if (this.balance > 0) {
+        if (crowdsaleAddress.balance > 0) {
             revert();
         }
         if (now < generalSaleStartDate) {
@@ -436,7 +433,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         uint featureDevelopmentAmount = token.balanceOf(saleWalletAddress);
         // Transfer tokens to baker and return ETH change
         token.transferFrom(saleWalletAddress, featureDevelopment.addr, featureDevelopmentAmount);
-        FundTransfer(address(this), msg.sender, this.balance);
+        FundTransfer(crowdsaleAddress, msg.sender, crowdsaleAddress.balance);
         selfdestruct(owner);
     }
 }
