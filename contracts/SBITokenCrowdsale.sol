@@ -26,11 +26,11 @@ contract CrowdsaleParameters {
         uint256 amount;
     }
 
-   AddressTokenAllocation internal generalSaleWallet = AddressTokenAllocation(0x5aCdaeF4fa410F38bC26003d0F441d99BB19265A, 22800000);
-   AddressTokenAllocation internal bounty = AddressTokenAllocation(0xc1C77Ff863bdE913DD53fD6cfE2c68Dfd5AE4f7F, 2000000);
-   AddressTokenAllocation internal partners = AddressTokenAllocation(0x307744026f34015111B04ea4D3A8dB9FdA2650bb, 3200000);
-   AddressTokenAllocation internal team = AddressTokenAllocation(0xCC4271d219a2c33a92aAcB4C8D010e9FBf664D1c, 12000000);
-   AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0x06281A31e1FfaC1d3877b29150bdBE93073E043B, 0);
+    AddressTokenAllocation internal generalSaleWallet = AddressTokenAllocation(0x5aCdaeF4fa410F38bC26003d0F441d99BB19265A, 22800000);
+    AddressTokenAllocation internal bounty = AddressTokenAllocation(0xc1C77Ff863bdE913DD53fD6cfE2c68Dfd5AE4f7F, 2000000);
+    AddressTokenAllocation internal partners = AddressTokenAllocation(0x307744026f34015111B04ea4D3A8dB9FdA2650bb, 3200000);
+    AddressTokenAllocation internal team = AddressTokenAllocation(0xCC4271d219a2c33a92aAcB4C8D010e9FBf664D1c, 12000000);
+    AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0x06281A31e1FfaC1d3877b29150bdBE93073E043B, 0);
 }
 
 
@@ -113,8 +113,8 @@ library SafeMath {
 contract SBIToken is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
     /* Public variables of the token */
-    string public standard = 'Token 0.1';
-    string public name = 'Subsoil Blockchain investitions';
+    string public standard = 'ERC20/SBI';
+    string public name = 'Subsoil Blockchain Investitions';
     string public symbol = 'SBI';
     uint8 public decimals = 18;
 
@@ -133,8 +133,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
     event NewSBIToken(address _token);
 
     /* Miscellaneous */
-
-    uint256 public totalSupply = 0; // 32700000;
+    uint256 public totalSupply = 0; // 40000000;
     bool public transfersEnabled = true;
 
     /**

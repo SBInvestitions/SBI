@@ -113,8 +113,8 @@ library SafeMath {
 contract SBIToken is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
     /* Public variables of the token */
-    string public standard = 'Token 0.1';
-    string public name = 'Subsoil Blockchain investitions';
+    string public standard = 'ERC20/SBI';
+    string public name = 'Subsoil Blockchain Investitions';
     string public symbol = 'SBI';
     uint8 public decimals = 18;
 
@@ -133,8 +133,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
     event NewSBIToken(address _token);
 
     /* Miscellaneous */
-
-    uint256 public totalSupply = 0; // 32700000;
+    uint256 public totalSupply = 0; // 40000000;
     bool public transfersEnabled = true;
 
     /**
