@@ -302,6 +302,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
 
 contract SBIBank is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
+    string public name = 'Subsoil Blockchain Investitions Bank';
     SBIToken private token;
     uint256 public currentVotingDate = 0;
     uint public currentVotingAmount = 0;

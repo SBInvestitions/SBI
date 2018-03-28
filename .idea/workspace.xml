@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="prod">
+    <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBIBank.sol" afterPath="$PROJECT_DIR$/contracts/SBIBank.sol" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" afterPath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
@@ -30,8 +30,8 @@
       <file leaf-file-name="SBIToken.sol" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contracts/SBIToken.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2466">
-              <caret line="116" column="46" selection-start-line="0" selection-start-column="0" selection-end-line="293" selection-end-column="1" />
+            <state relative-caret-position="165">
+              <caret line="116" column="59" selection-start-line="116" selection-start-column="4" selection-end-line="116" selection-end-column="59" />
               <folding />
             </state>
           </provider>
@@ -40,8 +40,8 @@
       <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1854">
-              <caret line="293" column="1" selection-start-line="293" selection-start-column="1" selection-end-line="293" selection-end-column="1" />
+            <state relative-caret-position="226">
+              <caret line="297" column="69" selection-start-line="297" selection-start-column="4" selection-end-line="297" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -50,8 +50,8 @@
       <file leaf-file-name="SBIBank.sol" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contracts/SBIBank.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4981">
-              <caret line="293" column="1" selection-start-line="293" selection-start-column="1" selection-end-line="293" selection-end-column="1" />
+            <state relative-caret-position="135">
+              <caret line="305" column="27" selection-start-line="305" selection-start-column="27" selection-end-line="305" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -304,7 +304,7 @@
       <workItem from="1521295372219" duration="743000" />
       <workItem from="1522083457595" duration="953000" />
       <workItem from="1522156437862" duration="8120000" />
-      <workItem from="1522217367901" duration="15191000" />
+      <workItem from="1522217367901" duration="15877000" />
     </task>
     <task id="LOCAL-00001" summary="contracts first">
       <created>1517854892770</created>
@@ -481,11 +481,18 @@
       <option name="project" value="LOCAL" />
       <updated>1522252946219</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="prod">
+      <created>1522253020572</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1522253020572</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="213269000" />
+    <option name="totallyTimeSpent" value="213955000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -878,24 +885,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBIToken.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2466">
-          <caret line="116" column="46" selection-start-line="0" selection-start-column="0" selection-end-line="293" selection-end-column="1" />
+        <state relative-caret-position="165">
+          <caret line="116" column="59" selection-start-line="116" selection-start-column="4" selection-end-line="116" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1854">
-          <caret line="293" column="1" selection-start-line="293" selection-start-column="1" selection-end-line="293" selection-end-column="1" />
+        <state relative-caret-position="226">
+          <caret line="297" column="69" selection-start-line="297" selection-start-column="4" selection-end-line="297" selection-end-column="69" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBIBank.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4981">
-          <caret line="293" column="1" selection-start-line="293" selection-start-column="1" selection-end-line="293" selection-end-column="1" />
+        <state relative-caret-position="135">
+          <caret line="305" column="27" selection-start-line="305" selection-start-column="27" selection-end-line="305" selection-end-column="27" />
           <folding />
         </state>
       </provider>

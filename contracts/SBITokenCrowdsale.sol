@@ -295,6 +295,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
 
 contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
+    string public name = 'Subsoil Blockchain Investitions Crowdsale';
     /* Token and records */
     SBIToken private token;
     address public bank;
