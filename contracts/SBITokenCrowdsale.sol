@@ -298,7 +298,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     using SafeMath for uint256;
     /* Token and records */
     SBIToken private token;
-    address bank;
+    address public bank;
     address saleWalletAddress;
     uint private tokenMultiplier = 10;
     uint public totalCollected = 0;
@@ -397,13 +397,10 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
 
     /**
     *  Transfer ETH amount from contract to bank's address.
-    *
-    * @param amount - ETH amount to transfer in Wei
     */
-    function safeWithdrawal(uint amount) external onlyOwner {
-        require(crowdsaleAddress.balance >= amount);
-        bank.transfer(amount);
-        FundTransfer(crowdsaleAddress, bank, amount);
+    function safeWithdrawal() external onlyOwner {
+        bank.transfer(crowdsaleAddress.balance);
+        FundTransfer(crowdsaleAddress, bank, crowdsaleAddress.balance);
     }
 
     /**

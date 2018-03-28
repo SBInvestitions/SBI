@@ -133,8 +133,7 @@ contract SBIToken is Owned, CrowdsaleParameters {
     event NewSBIToken(address _token);
 
     /* Miscellaneous */
-
-    uint256 public totalSupply = 0; // 32700000;
+    uint256 public totalSupply = 0; // 40000000;
     bool public transfersEnabled = true;
 
     /**

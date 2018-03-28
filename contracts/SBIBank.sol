@@ -439,9 +439,9 @@ contract SBIBank is Owned, CrowdsaleParameters {
       uint256 tokensPercent = token.balanceOf(msg.sender).div(40000000).div(1000000000000000);
       uint256 refundedAmount = tokensPercent.mul(sbiBank.balance).div(1000);
       address sender = msg.sender;
+      alreadyRefunded[msg.sender] = refundedAmount;
       token.transferFrom(msg.sender, featureDevelopment.addr, token.balanceOf(msg.sender));
       sender.transfer(refundedAmount);
-      alreadyRefunded[msg.sender] = refundedAmount;
       Refund(now, refundedAmount, msg.sender);
   }
 

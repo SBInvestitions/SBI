@@ -252,7 +252,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       it("11. ICO goal reached: can not kill contract, can withdrawal money, then can kill contract", async() => {
         await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
         await testLib.killCrowdsaleNegative(crowdsale);
-        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, web3.toWei(475.0, 'ether'));
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
         await testLib.killCrowdsalePositive(crowdsale);
       });
     });
@@ -272,19 +272,15 @@ contract('SBITokenCrowdsale', function (accounts) {
         await token.approveCrowdsale(crowdsale.address);
       });
 
-      it("Cannot withdraw money more then collected", async() => {
-        await testLib.checkWithdrawalIsDenied(crowdsale, owner, saleGoalInWei);
+      it("12 Only owner can withdraw money", async() => {
+        await testLib.checkWithdrawalIsDenied(crowdsale, accounts[1]);
       });
 
-      it("Only owner can withdraw money", async() => {
-        await testLib.checkWithdrawalIsDenied(crowdsale, accounts[1], 1);
-      });
-
-      it('Can kill contract with no tokens on generalSaleWallet', async() => {
+      it('13 Can kill contract with no tokens on generalSaleWallet', async() => {
         await testLib.killCrowdsalePositive(crowdsale);
       });
 
-      it('Only owner can kill contract', async() => {
+      it('14 Only owner can kill contract', async() => {
         await testLib.killCrowdsaleNegative(crowdsale, accounts[2]);
       });
     });

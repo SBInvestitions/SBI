@@ -137,10 +137,10 @@ contract('SBIBank', function (accounts) {
       crowdsaleForWithdrawal = await SBITokenCrowdsale.new(...crowdSaleInitialParams(tokenForWithdrawal, bankForWithdrawal));
     });
 
-    /*describe('Initial parameters and ownership', async function () {
+    describe('Initial parameters and ownership', async function () {
 
       beforeEach(async function () {
-        /!* contrancts *!/
+        /* contrancts */
         token = await SBIToken.new({gas: 7000000});
         bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
@@ -230,15 +230,16 @@ contract('SBIBank', function (accounts) {
           crowdsaleParams.pools[0].address,
           saleGoalInWei,
           crowdsaleParams.tokensPerEthGeneral);
-        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, web3.toWei(4.0, 'ether'));
+
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
         const bankBalance = await web3.eth.getBalance(bank.address);
         await bank.addVoting(web3.toWei(1.0, 'ether'));
         const currentVotingAmount = await bank.currentVotingAmount();
         const currentVotingDate = await bank.currentVotingDate();
 
-        /!*console.log('bankBalance = ', bankBalance.toNumber());
+        console.log('bankBalance = ', bankBalance.toNumber());
         console.log('currentVotingAmount = ', currentVotingAmount);
-        console.log('currentVotingDate = ', currentVotingDate);*!/
+        console.log('currentVotingDate = ', currentVotingDate);
 
         assert.notEqual(currentVotingDate, null);
         assert.equal(currentVotingAmount, web3.toWei(1.0, 'ether'), 'currentVotingAmount should be 1 eth');
@@ -370,11 +371,11 @@ contract('SBIBank', function (accounts) {
         const currentVotingDate = await bank.currentVotingDate();
         const senderBalance = await token.balanceOf(crowdsaleParams.pools[9].address);
 
-        /!*console.log('senderBalance = ', senderBalance.toNumber());
+        console.log('senderBalance = ', senderBalance.toNumber());
         console.log('currentVotingAmount = ', currentVotingAmount);
-        console.log('currentVotingDate = ', currentVotingDate);*!/
+        console.log('currentVotingDate = ', currentVotingDate);
 
-        assert.equal(bankBalance.toNumber(), web3.toWei(4.0, 'ether'), 'Bank balance not null');
+        assert.equal(bankBalance.toNumber(), web3.toWei(237.5, 'ether'), 'Bank balance is not null');
         assert.equal(currentVotingAmount, web3.toWei(3.0, 'ether'), 'currentVotingAmount should be 3 eth');
       });
 
@@ -423,18 +424,18 @@ contract('SBIBank', function (accounts) {
         const allowedWithdraw = await bank.allowedWithdraw();
         const allowedRefund = await bank.allowedRefund();
 
-        /!*console.log('bankBalanceBefore', bankBalanceBefore.toNumber());
+        /*console.log('bankBalanceBefore', bankBalanceBefore.toNumber());
         console.log('ownerBalanceBefore', ownerBalanceBefore.toNumber());
         console.log('bankBalanceAfter', bankBalanceAfter.toNumber());
         console.log('ownerBalanceAfter', ownerBalanceAfter.toNumber());
         console.log('allowedWithdraw', allowedWithdraw.toNumber());
-        console.log('allowedRefund', allowedRefund.toNumber());*!/
+        console.log('allowedRefund', allowedRefund.toNumber());*/
 
-        assert.equal(bankBalanceBefore.toNumber(), web3.toWei(4.0, 'ether'), 'bankBalanceAfter should be 4 eth');
+        assert.equal(bankBalanceBefore.toNumber(), web3.toWei(237.5, 'ether'), 'bankBalanceAfter should be 4 eth');
         assert.equal(allowedWithdraw.toNumber(), 0, 'allowedWithdraw should be 0');
         assert.equal(allowedRefund.toNumber(), 0, 'allowedRefund should be 0');
       });
-    });*/
+    });
 
     /*describe('Allow withdraw', async () => {
 
@@ -589,7 +590,7 @@ contract('SBIBank', function (accounts) {
       });
     });*/
 
-    describe('Allow refund', async () => {
+    /*describe('Allow refund', async () => {
 
       before(async() => {
         token = await SBIToken.new({gas: 7000000});
@@ -605,7 +606,7 @@ contract('SBIBank', function (accounts) {
         const amountToBuyInTokens = new BigNumber(amountToBuyInWei).times(crowdsaleParams.tokensPerEthGeneral);
         await testLib.checkBuyTokens(crowdsale, token, crowdsaleParams.pools[10].address, crowdsaleParams.pools[0].address, amountToBuyInWei, amountToBuyInWei, amountToBuyInTokens, false);
         await testLib.checkBuyTokens(crowdsale, token, crowdsaleParams.pools[11].address, crowdsaleParams.pools[0].address, amountToBuyInWei, amountToBuyInWei, amountToBuyInTokens, true);
-        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank, web3.toWei(200.0, 'ether'));
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
         const bankBalanceBeforeVoting = await web3.eth.getBalance(bank.address);
         console.log('bankBalanceBeforeVoting = ', bankBalanceBeforeVoting.toNumber());
         await bank.addVoting(web3.toWei(200.0, 'ether'));
@@ -689,8 +690,8 @@ contract('SBIBank', function (accounts) {
         const allowedWithdraw = await bank.allowedWithdraw();
         const allowedRefund = await bank.allowedRefund();
 
-        /*console.log('allowedWithdraw = ', allowedWithdraw.toNumber());
-        console.log('allowedRefund = ', allowedRefund.toNumber());*/
+        /!*console.log('allowedWithdraw = ', allowedWithdraw.toNumber());
+        console.log('allowedRefund = ', allowedRefund.toNumber());*!/
 
         assert.equal(allowedRefund, web3.toWei(200.0, 'ether'), 'allowedRefund should be 0');
         assert.equal(allowedWithdraw, 0, 'allowedWithdraw should be 0');
@@ -731,10 +732,17 @@ contract('SBIBank', function (accounts) {
         const bankBalanceAfter = await web3.eth.getBalance(bank.address);
         const investorsTokenBalanceAfter = await token.balanceOf(crowdsaleParams.pools[10].address);
         const featureDevelopmentBalanceAfter = await token.balanceOf(crowdsaleParams.pools[4].address);
+        const expectedAmount = bankBalanceBefore.mul(investorsTokenBalanceBefore.div(new BigNumber(40000000*(10**18))));
+
+        console.log('investorsTokenBalanceBefore = ', investorsTokenBalanceBefore.toNumber(),
+          'bankBalanceBefore', bankBalanceBefore.toNumber(),
+          'expectedAmount = ', expectedAmount.toNumber(),
+          'bankBalanceAfter = ', bankBalanceAfter);
+
         assert.equal(investorsTokenBalanceAfter.toNumber(), 0, 'investor token balance wrong');
         assert.equal(featureDevelopmentBalanceBefore.toNumber(), featureDevelopmentBalanceAfter.minus(investorsTokenBalanceBefore).toNumber(), 'feature address balance wrong');
-        assert.equal(arg1Value.toNumber(), web3.toWei(57.0, 'ether'), 'eth to refund should be 57');
-        assert.equal(bankBalanceBefore.toNumber(), bankBalanceAfter.plus(web3.toWei(57.0, 'ether')).toNumber(), 'bankBalanceAfter should be bankBalanceBefore + 57 eth');
+        assert.equal(arg1Value.toNumber(), expectedAmount.toNumber(), 'eth to refund should be 57');
+        assert.equal(bankBalanceBefore.toNumber(), bankBalanceAfter.plus(expectedAmount).toNumber(), 'bankBalanceAfter should be bankBalanceBefore + 57 eth');
       });
 
       it('6/1 Refund the second acc', async function () {
@@ -759,7 +767,6 @@ contract('SBIBank', function (accounts) {
         const investorsTokenBalanceAfter = await token.balanceOf(crowdsaleParams.pools[2].address);
         const featureDevelopmentBalanceAfter = await token.balanceOf(crowdsaleParams.pools[4].address);
         const expectedAmount = bankBalanceBefore.mul(investorsTokenBalanceBefore.div(new BigNumber(40000000*(10**18))));
-        // console.log('investorsTokenBalanceBefore = ', investorsTokenBalanceBefore.toNumber(), 'bankBalanceBefore', bankBalanceBefore.toNumber(), 'expectedAmount = ', expectedAmount.toNumber());
 
         assert.equal(investorsTokenBalanceAfter.toNumber(), 0, 'investor token balance wrong');
         assert.equal(featureDevelopmentBalanceBefore.toNumber(), featureDevelopmentBalanceAfter.minus(investorsTokenBalanceBefore).toNumber(), 'feature address balance wrong');
@@ -792,6 +799,6 @@ contract('SBIBank', function (accounts) {
         assert.notEqual(currentVotingDate, null);
         assert.equal(currentVotingAmount, web3.toWei(100.0, 'ether'), 'currentVotingAmount should be 475 eth');
       });
-    });
+    });*/
   });
 });
