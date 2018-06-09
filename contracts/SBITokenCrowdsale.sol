@@ -306,9 +306,14 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     uint public saleStopTimestamp;
     uint public saleGoal;
     bool public goalReached = false;
-    uint public tokensPerEth = 48000;
+    uint public preicoTokensPerEth = 27314;
+    uint public tokensPerEth = 1050;
     mapping (address => uint256) private investmentRecords;
     address crowdsaleAddress = this;
+    uint256 public constant saleStartDate = 1530403200;
+    uint256 public constant saleEndDate = 1535759940;
+    uint256 public constant preSaleStartDate = 1529020800;
+    uint256 public constant preSaleEndDate = 1530403140;
 
     /* Events */
     event TokenSale(address indexed tokenReceiver, uint indexed etherAmount, uint indexed tokenAmount, uint tokensPerEther);
@@ -334,7 +339,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     * @return active - True, if sale is active
     */
     function isICOActive() public constant returns (bool active) {
-        active = ((generalSaleStartDate <= now) && (now < generalSaleEndDate) && (!goalReached));
+        active = ((preSaleStartDate <= now) && (now < saleEndDate) && (!goalReached));
         return active;
     }
 
@@ -365,7 +370,14 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
 
         // Calculate token amount that is purchased,
         // truncate to integer
-        uint tokenAmount = amount * tokensPerEth / 1e18;
+        uint tokensRate = 0;
+        if (preSaleStartDate <= now && now <= preSaleEndDate) {
+          tokensRate = preicoTokensPerEth;
+        }
+        if (saleStartDate <= now && now <= saleEndDate) {
+          tokensRate = tokensPerEth;
+        }
+        uint tokenAmount = amount * tokensRate / 1e18;
 
         // Check that stage wallet has enough tokens. If not, sell the rest and
         // return change.
@@ -377,11 +389,11 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
 
         // Calculate Wei amount that was received in this transaction
         // adjusted to rounding and remaining token amount
-        uint acceptedAmount = tokenAmount * 1e18 / tokensPerEth;
+        uint acceptedAmount = tokenAmount * 1e18 / tokensRate;
 
         // Transfer tokens to baker and return ETH change
         token.transferFrom(saleWalletAddress, investorAddress, tokenAmount * tokenMultiplier);
-        TokenSale(investorAddress, amount, tokenAmount, tokensPerEth);
+        TokenSale(investorAddress, amount, tokenAmount, tokensRate);
 
         // Return change
         uint change = amount - acceptedAmount;
@@ -423,7 +435,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         if (crowdsaleAddress.balance > 0) {
             revert();
         }
-        if (now < generalSaleStartDate) {
+        if (now < preSaleStartDate) {
             selfdestruct(owner);
         }
         // save the not sold tokens to featureDevelopment wallet

@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBIBank.sol" afterPath="$PROJECT_DIR$/contracts/SBIBank.sol" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" afterPath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/testLib.js" afterPath="$PROJECT_DIR$/lib/testLib.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" afterPath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
     </list>
     <ignored path="SBI.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,31 +28,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SBIToken.sol" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/contracts/SBIToken.sol">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="116" column="59" selection-start-line="116" selection-start-column="4" selection-end-line="116" selection-end-column="59" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="297" column="69" selection-start-line="297" selection-start-column="4" selection-end-line="297" selection-end-column="69" />
+            <state relative-caret-position="3506">
+              <caret line="341" column="65" selection-start-line="341" selection-start-column="65" selection-end-line="341" selection-end-column="65" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SBIBank.sol" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/contracts/SBIBank.sol">
+      <file leaf-file-name="SBITokenCrodwsale.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="305" column="27" selection-start-line="305" selection-start-column="27" selection-end-line="305" selection-end-column="27" />
+            <state relative-caret-position="221">
+              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testLib.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lib/testLib.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="529">
+              <caret line="306" column="56" selection-start-line="306" selection-start-column="56" selection-end-line="306" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testrpc.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -64,7 +75,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="develop" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -91,12 +102,12 @@
         <option value="$PROJECT_DIR$/contracts/SBIPayment.sol" />
         <option value="$PROJECT_DIR$/contracts/CrowdsaleParameters.sol" />
         <option value="$PROJECT_DIR$/test/SBIToken.test.js" />
-        <option value="$PROJECT_DIR$/lib/testLib.js" />
-        <option value="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
         <option value="$PROJECT_DIR$/test/SBIBank.test.js" />
         <option value="$PROJECT_DIR$/contracts/SBIToken.sol" />
-        <option value="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
         <option value="$PROJECT_DIR$/contracts/SBIBank.sol" />
+        <option value="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
+        <option value="$PROJECT_DIR$/lib/testLib.js" />
+        <option value="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
       </list>
     </option>
   </component>
@@ -137,8 +148,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -187,12 +196,14 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../benrevo-react" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
@@ -304,7 +315,15 @@
       <workItem from="1521295372219" duration="743000" />
       <workItem from="1522083457595" duration="953000" />
       <workItem from="1522156437862" duration="8120000" />
-      <workItem from="1522217367901" duration="15877000" />
+      <workItem from="1522217367901" duration="15884000" />
+      <workItem from="1522303924562" duration="1175000" />
+      <workItem from="1522579222683" duration="612000" />
+      <workItem from="1522601409073" duration="258000" />
+      <workItem from="1522909910660" duration="1860000" />
+      <workItem from="1522929288771" duration="207000" />
+      <workItem from="1522939771260" duration="682000" />
+      <workItem from="1527622274179" duration="18000" />
+      <workItem from="1528526344973" duration="4643000" />
     </task>
     <task id="LOCAL-00001" summary="contracts first">
       <created>1517854892770</created>
@@ -488,11 +507,18 @@
       <option name="project" value="LOCAL" />
       <updated>1522253020572</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="prod">
+      <created>1522253972049</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1522253972049</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="213955000" />
+    <option name="totallyTimeSpent" value="223417000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -509,6 +535,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="YouTrack" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2708559" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24485373" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -699,13 +726,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/truffle.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/contract_templates/Congress.sol">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
@@ -826,18 +846,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="37" column="9" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBITokenInterface.sol">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="40" selection-start-line="3" selection-start-column="40" selection-end-line="3" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -845,70 +857,83 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
           <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/contracts/SBIBank.sol">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5185">
+          <caret line="305" column="27" selection-start-line="305" selection-start-column="27" selection-end-line="305" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/testLib.js">
+    <entry file="file://$PROJECT_DIR$/contracts/SBIToken.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7123">
-          <caret line="419" column="8" selection-start-line="419" selection-start-column="8" selection-end-line="419" selection-end-column="8" />
+        <state relative-caret-position="1972">
+          <caret line="116" column="59" selection-start-line="116" selection-start-column="4" selection-end-line="116" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="275" column="33" selection-start-line="275" selection-start-column="33" selection-end-line="275" selection-end-column="33" />
+        <state relative-caret-position="629">
+          <caret line="37" column="9" selection-start-line="0" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/SBIBank.test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="423" column="61" selection-start-line="423" selection-start-column="61" selection-end-line="423" selection-end-column="61" />
-          <folding>
-            <element signature="e#26078#37968#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="11" column="54" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="54" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contracts/SBIToken.sol">
+    <entry file="file://$PROJECT_DIR$/truffle.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="116" column="59" selection-start-line="116" selection-start-column="4" selection-end-line="116" selection-end-column="59" />
+        <state relative-caret-position="340">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/testLib.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="306" column="56" selection-start-line="306" selection-start-column="56" selection-end-line="306" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="297" column="69" selection-start-line="297" selection-start-column="4" selection-end-line="297" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/contracts/SBIBank.sol">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="305" column="27" selection-start-line="305" selection-start-column="27" selection-end-line="305" selection-end-column="27" />
+        <state relative-caret-position="3506">
+          <caret line="341" column="65" selection-start-line="341" selection-start-column="65" selection-end-line="341" selection-end-column="65" />
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="webServersAuthStorage">
-    <data>AAABIO9zUEdZ1jiAerigT06BhDPHGvinKkZ0TB7sM/wWsceYMVIdiPGiFuqTGuKqSFCXnQGfpivAsJjyQFnpSHXkgYIq6+u5W1tOHGOdfHk6bEdXvXFVWYZqy3uiWQQrkoW4ECCNx1opWdJVD0kgDVCJP7MSLnDdmzxAJ4eldnEo/J5f17jbNJeBR9ADf/ktFGyipmjzLetyT95tX406BX2NLJC1zbkcSg0TWk7WzM9oPWD3QNtzygl/KVesf9a1P1W5cPNF4EQfNB8oujRJ/es5PYvC5/UsJ7acqCqK174u6GjcrrkThsa9DO9E0ltt9d+3eeL0Q1aAJheyEF92jrkBWZqN+/FXRklsttSQjfriWMI/4JRA+o+Cx7KgLoaZUNIPOrE9/ddaH96FBp7982RK3VA=</data>
+    <data>AAABIMnMM1KMou39q40UhTa/e9D0UWYWq7ocGMYcxNeRUlvPvgzGkHN3G6HI31y9ohi/Qaemza/Pr56SuaLS/Spdy0Mh8lPIMbQBVuuyVpBzBvZLYRZ7Xie0socx4QvGD3S5f9i1wXlMHRN+tldAkPPRvqO1BmWiAgQRuPS2FVNWofpEQ/pKyDNiqZC8qrBuBZPdDGshq2PJQQPW8xczERbsTgwo9ux1JRtNQ0jHi3IapjnoY7mMsEJpEa9ncnvMrVv6RfjDc7P2gOQY0gfz2FRTRjkpRy+9+BnsIs17okxbN07x0DV6R4HrilRanxZ6djj9PtxDkaXMb1XPDVk9xO853yisD6xc6MLDhJXq3o/pNVXFZlC8UWd6IZ1sTy3vigOOxdcFASnXblAJ9dMmbiXTfJY=</data>
   </component>
 </project>
