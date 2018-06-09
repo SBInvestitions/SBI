@@ -31,8 +31,8 @@
       <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3506">
-              <caret line="341" column="65" selection-start-line="341" selection-start-column="65" selection-end-line="341" selection-end-column="65" />
+            <state relative-caret-position="205">
+              <caret line="374" column="97" selection-start-line="374" selection-start-column="80" selection-end-line="374" selection-end-column="97" />
               <folding />
             </state>
           </provider>
@@ -41,8 +41,18 @@
       <file leaf-file-name="SBITokenCrodwsale.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+            <state relative-caret-position="349">
+              <caret line="186" column="37" selection-start-line="186" selection-start-column="37" selection-end-line="186" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CrowdsaleParameters.sol" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/contracts/CrowdsaleParameters.sol">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="243">
+              <caret line="16" column="79" selection-start-line="16" selection-start-column="79" selection-end-line="16" selection-end-column="79" />
               <folding />
             </state>
           </provider>
@@ -51,8 +61,8 @@
       <file leaf-file-name="testLib.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/testLib.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="306" column="56" selection-start-line="306" selection-start-column="56" selection-end-line="306" selection-end-column="56" />
+            <state relative-caret-position="206">
+              <caret line="302" column="51" selection-start-line="302" selection-start-column="51" selection-end-line="302" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -61,8 +71,8 @@
       <file leaf-file-name="testrpc.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
+            <state relative-caret-position="204">
+              <caret line="12" column="89" selection-start-line="12" selection-start-column="89" selection-end-line="12" selection-end-column="89" />
               <folding />
             </state>
           </provider>
@@ -106,8 +116,8 @@
         <option value="$PROJECT_DIR$/contracts/SBIToken.sol" />
         <option value="$PROJECT_DIR$/contracts/SBIBank.sol" />
         <option value="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
-        <option value="$PROJECT_DIR$/lib/testLib.js" />
         <option value="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
+        <option value="$PROJECT_DIR$/lib/testLib.js" />
       </list>
     </option>
   </component>
@@ -203,7 +213,7 @@
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../landing" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
@@ -323,7 +333,7 @@
       <workItem from="1522929288771" duration="207000" />
       <workItem from="1522939771260" duration="682000" />
       <workItem from="1527622274179" duration="18000" />
-      <workItem from="1528526344973" duration="4643000" />
+      <workItem from="1528526344973" duration="11154000" />
     </task>
     <task id="LOCAL-00001" summary="contracts first">
       <created>1517854892770</created>
@@ -514,11 +524,18 @@
       <option name="project" value="LOCAL" />
       <updated>1522253972049</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="preICO">
+      <created>1528531064571</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1528531064571</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="223417000" />
+    <option name="totallyTimeSpent" value="229928000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -613,7 +630,8 @@
     <MESSAGE value="Fixing bugs" />
     <MESSAGE value="new test" />
     <MESSAGE value="prod" />
-    <option name="LAST_COMMIT_MESSAGE" value="prod" />
+    <MESSAGE value="preICO" />
+    <option name="LAST_COMMIT_MESSAGE" value="preICO" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -853,13 +871,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contracts/CrowdsaleParameters.sol">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="107">
-          <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBIBank.sol">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5185">
@@ -900,34 +911,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/testLib.js">
+    <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="306" column="56" selection-start-line="306" selection-start-column="56" selection-end-line="306" selection-end-column="56" />
+        <state relative-caret-position="204">
+          <caret line="12" column="89" selection-start-line="12" selection-start-column="89" selection-end-line="12" selection-end-column="89" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
+    <entry file="file://$PROJECT_DIR$/contracts/CrowdsaleParameters.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="63" selection-start-line="18" selection-start-column="63" selection-end-line="18" selection-end-column="63" />
+        <state relative-caret-position="243">
+          <caret line="16" column="79" selection-start-line="16" selection-start-column="79" selection-end-line="16" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/testLib.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="302" column="51" selection-start-line="302" selection-start-column="51" selection-end-line="302" selection-end-column="51" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+        <state relative-caret-position="349">
+          <caret line="186" column="37" selection-start-line="186" selection-start-column="37" selection-end-line="186" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3506">
-          <caret line="341" column="65" selection-start-line="341" selection-start-column="65" selection-end-line="341" selection-end-column="65" />
+        <state relative-caret-position="205">
+          <caret line="374" column="97" selection-start-line="374" selection-start-column="80" selection-end-line="374" selection-end-column="97" />
           <folding />
         </state>
       </provider>

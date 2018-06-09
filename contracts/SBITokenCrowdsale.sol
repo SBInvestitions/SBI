@@ -26,11 +26,11 @@ contract CrowdsaleParameters {
         uint256 amount;
     }
 
-    AddressTokenAllocation internal generalSaleWallet = AddressTokenAllocation(0x5aCdaeF4fa410F38bC26003d0F441d99BB19265A, 22800000);
-    AddressTokenAllocation internal bounty = AddressTokenAllocation(0xc1C77Ff863bdE913DD53fD6cfE2c68Dfd5AE4f7F, 2000000);
-    AddressTokenAllocation internal partners = AddressTokenAllocation(0x307744026f34015111B04ea4D3A8dB9FdA2650bb, 3200000);
-    AddressTokenAllocation internal team = AddressTokenAllocation(0xCC4271d219a2c33a92aAcB4C8D010e9FBf664D1c, 12000000);
-    AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0x06281A31e1FfaC1d3877b29150bdBE93073E043B, 0);
+    AddressTokenAllocation internal generalSaleWallet = AddressTokenAllocation(0x8d6d63c22d114c18c2a0da6db0a8972ed9c40343, 22800000);
+    AddressTokenAllocation internal bounty = AddressTokenAllocation(0x9567397b445998e7e405d5fc3d239391bf5d0200, 2000000);
+    AddressTokenAllocation internal partners = AddressTokenAllocation(0x5d2fca837fdfddcb034555d8e79ca76a54038e16, 3200000);
+    AddressTokenAllocation internal team = AddressTokenAllocation(0xd3b6b8528841c1c9a63ffa38d96785c32e004fa5, 12000000);
+    AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0xd3b6b8528841c1c9a63ffa38d96785c32e004fa5, 0);
 }
 
 
@@ -314,6 +314,7 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     uint256 public constant saleEndDate = 1535759940;
     uint256 public constant preSaleStartDate = 1529020800;
     uint256 public constant preSaleEndDate = 1530403140;
+    uint public preSaleAmount = 5800000;
 
     /* Events */
     event TokenSale(address indexed tokenReceiver, uint indexed etherAmount, uint indexed tokenAmount, uint tokensPerEther);
@@ -371,10 +372,9 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         // Calculate token amount that is purchased,
         // truncate to integer
         uint tokensRate = 0;
-        if (preSaleStartDate <= now && now <= preSaleEndDate) {
+        if (preSaleStartDate <= now && now <= preSaleEndDate && token.balanceOf(saleWalletAddress) > preSaleAmount) {
           tokensRate = preicoTokensPerEth;
-        }
-        if (saleStartDate <= now && now <= saleEndDate) {
+        } else {
           tokensRate = tokensPerEth;
         }
         uint tokenAmount = amount * tokensRate / 1e18;

@@ -22,9 +22,9 @@ contract('SBITokenCrowdsale', function (accounts) {
     tokensPerEthGeneral: 48000,
     //  dates
     preSaleStartDate: new Date('2018-06-15T00:00+00:00').getTime() / 1000, // June 15, 2018
-    preSaleEndDate: new Date('2018-06-30T23:59+59:00').getTime() / 1000, // June 30, 2018.
+    preSaleEndDate: new Date('2018-06-30T23:59+00:00').getTime() / 1000, // June 30, 2018.
     generalSaleStartDate: new Date('2018-07-01T00:00+00:00').getTime() / 1000, // July 1, 2018
-    generalSaleEndDate: new Date('2018-08-31T23:59+59:00').getTime() / 1000, // August 31, 2018.
+    generalSaleEndDate: new Date('2018-08-31T23:59+00:00').getTime() / 1000, // August 31, 2018.
     //  misc
     weiInEth: 1000000000000000000,
     //  pools
@@ -167,7 +167,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       });
 
       it('1. Contract default parameters.', async function () {
-        await testLib.checkCurrentTimeBeforeGeneralSale(generalSaleStartDate);
+        await testLib.checkCurrentTimeBeforeGeneralSale(preSaleStartDate);
         await testLib.checkTotalCollected(crowdsale, 0);
       });
 
@@ -188,7 +188,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       });
 
       it('6. Setting stage periods', async() => {
-        await testLib.checkIcoStageDates(crowdsale, null, null, crowdsaleParams.generalSaleStartDate, crowdsaleParams.generalSaleEndDate);
+        await testLib.checkIcoStageDates(crowdsale, crowdsaleParams.preSaleStartDate, crowdsaleParams.preSaleEndDate, crowdsaleParams.generalSaleStartDate, crowdsaleParams.generalSaleEndDate);
       });
 
       it('7. Receiving Ether outside of stage periods', async() => {
