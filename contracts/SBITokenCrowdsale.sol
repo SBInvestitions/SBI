@@ -26,11 +26,11 @@ contract CrowdsaleParameters {
         uint256 amount;
     }
 
-    AddressTokenAllocation internal generalSaleWallet = AddressTokenAllocation(0x8d6d63c22d114c18c2a0da6db0a8972ed9c40343, 22800000);
-    AddressTokenAllocation internal bounty = AddressTokenAllocation(0x9567397b445998e7e405d5fc3d239391bf5d0200, 2000000);
-    AddressTokenAllocation internal partners = AddressTokenAllocation(0x5d2fca837fdfddcb034555d8e79ca76a54038e16, 3200000);
-    AddressTokenAllocation internal team = AddressTokenAllocation(0xd3b6b8528841c1c9a63ffa38d96785c32e004fa5, 12000000);
-    AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0xa83202b9346d9fa846f1b0b3bb0aadabea88908e, 0);
+    AddressTokenAllocation internal generalSaleWallet = AddressTokenAllocation(0x8d6d63c22D114C18C2a0dA6Db0A8972Ed9C40343, 22800000);
+    AddressTokenAllocation internal bounty = AddressTokenAllocation(0x9567397B445998E7E405D5Fc3d239391bf5d0200, 2000000);
+    AddressTokenAllocation internal partners = AddressTokenAllocation(0x5d2fca837fdFDDCb034555D8E79CA76A54038e16, 3200000);
+    AddressTokenAllocation internal team = AddressTokenAllocation(0xd3b6B8528841C1c9a63FFA38D96785C32E004fA5, 12000000);
+    AddressTokenAllocation internal featureDevelopment = AddressTokenAllocation(0xa83202b9346d9Fa846f1B0b3BB0AaDAbEa88908E, 0);
 }
 
 
@@ -307,14 +307,14 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
     uint public saleGoal;
     bool public goalReached = false;
     uint public preicoTokensPerEth = 27314;
-    uint public tokensPerEth = 1050;
+    uint public tokensPerEth = 10500;
     mapping (address => uint256) private investmentRecords;
     address crowdsaleAddress = this;
     uint256 public constant saleStartDate = 1530403200;
     uint256 public constant saleEndDate = 1535759940;
     uint256 public constant preSaleStartDate = 1529020800;
     uint256 public constant preSaleEndDate = 1530403140;
-    uint256 public preSaleAmount = 5800000;
+    uint public preSaleAmount = 5800000;
 
     /* Events */
     event TokenSale(address indexed tokenReceiver, uint indexed etherAmount, uint indexed tokenAmount, uint tokensPerEther);
@@ -368,26 +368,37 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
 
         // Fund transfer event
         FundTransfer(investorAddress, address(this), amount);
-
+        uint remainingTokenBalance = token.balanceOf(saleWalletAddress) / tokenMultiplier;
         // Calculate token amount that is purchased,
         // truncate to integer
-        uint tokenAmount = amount * tokensPerEth / tokenMultiplier;
+        uint tokensRate = 0;
+        uint tokenAmount = 0;
+        uint acceptedAmount = 0;
+        uint preIcoAcceptedAmount = preSaleAmount / tokensPerEth;
+        if (preSaleStartDate <= now && now <= preSaleEndDate && remainingTokenBalance > 17000000) {
+          tokensRate = preicoTokensPerEth;
+          if (preIcoAcceptedAmount < amount) {
+            tokenAmount = preSaleAmount + ((amount / tokenMultiplier) - preIcoAcceptedAmount) * tokensPerEth;
+          } else {
+            tokenAmount = preicoTokensPerEth * amount / tokenMultiplier;
+          }
+          acceptedAmount = (remainingTokenBalance - 17000000) * preicoTokensPerEth + 17000000 * tokensPerEth;
+        } else {
+          tokensRate = tokensPerEth;
+          tokenAmount = amount * tokensPerEth / tokenMultiplier;
+          acceptedAmount = remainingTokenBalance * tokensPerEth;
+        }
 
         // Check that stage wallet has enough tokens. If not, sell the rest and
         // return change.
-        uint remainingTokenBalance = token.balanceOf(saleWalletAddress) / tokenMultiplier;
         if (remainingTokenBalance <= tokenAmount) {
             tokenAmount = remainingTokenBalance;
             goalReached = true;
         }
 
-        // Calculate Wei amount that was received in this transaction
-        // adjusted to rounding and remaining token amount
-        uint acceptedAmount = tokenAmount * tokenMultiplier / tokensPerEth;
-
         // Transfer tokens to baker and return ETH change
         token.transferFrom(saleWalletAddress, investorAddress, tokenAmount * tokenMultiplier);
-        TokenSale(investorAddress, amount, tokenAmount, tokensPerEth);
+        TokenSale(investorAddress, amount, tokenAmount, tokensRate);
 
         // Return change
         uint change = amount - acceptedAmount;

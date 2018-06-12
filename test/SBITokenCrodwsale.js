@@ -19,7 +19,8 @@ contract('SBITokenCrowdsale', function (accounts) {
 
   const crowdsaleParams = {
     //  prices
-    tokensPerEthGeneral: 48000,
+    tokensPerEthPre: 27314,
+    tokensPerEthGeneral: 10500,
     //  dates
     preSaleStartDate: new Date('2018-06-15T00:00+00:00').getTime() / 1000, // June 15, 2018
     preSaleEndDate: new Date('2018-06-30T23:59+00:00').getTime() / 1000, // June 30, 2018.
@@ -126,8 +127,8 @@ contract('SBITokenCrowdsale', function (accounts) {
   };
 
   // ICO goal in wei ((tokensGoal / tokensPerEth) * weiInEth)
-  const saleGoalInWei = new BigNumber(crowdsaleParams.pools[0].allocationAmount).dividedBy(crowdsaleParams.tokensPerEthGeneral).times(crowdsaleParams.weiInEth);
-  console.log('saleGoalInWei = ', saleGoalInWei);
+  const saleGoalInWei =  new BigNumber(2172).times(crowdsaleParams.weiInEth); // new BigNumber(crowdsaleParams.pools[0].allocationAmount).dividedBy(crowdsaleParams.tokensPerEthGeneral).times(crowdsaleParams.weiInEth);
+  console.log('saleGoalInWei = ', saleGoalInWei.toNumber());
   // ICO goal in token's wei
   const generalSaleAmountInWei = new BigNumber(crowdsaleParams.pools[0].allocationAmount).times(crowdsaleParams.weiInEth);
 
@@ -224,38 +225,40 @@ contract('SBITokenCrowdsale', function (accounts) {
         await testLib.checkIcoActive(crowdsale, true);
       });
 
-      describe('Tokens purchase', async() => {
+      it('9.1 Cannot buy 0 tokens', async() => {
+        await testLib.checkBuy0Tokens(crowdsale, token, crowdsaleParams.pools[6].address, crowdsaleParams.pools[0].address);
+      });
 
-        it('Cannot buy 0 tokens', async() => {
-          await testLib.checkBuy0Tokens(crowdsale, token, crowdsaleParams.pools[6].address, crowdsaleParams.pools[0].address);
-        });
+      it('9.2 Buy part of tokens', async() => {
+        await testLib.checkBuyPartOfTokens(crowdsale,
+          token,
+          crowdsaleParams.pools[6].address,
+          crowdsaleParams.pools[0].address,
+          saleGoalInWei,
+          crowdsaleParams.tokensPerEthGeneral);
+      });
 
-        it('Buy part of tokens', async() => {
-          await testLib.checkBuyPartOfTokens(crowdsale,
-            token,
-            crowdsaleParams.pools[6].address,
-            crowdsaleParams.pools[0].address,
-            saleGoalInWei,
-            crowdsaleParams.tokensPerEthGeneral);
-        });
+      it('9.3 Buy all tokens', async() => {
+        await testLib.checkBuyAllTokens(crowdsale,
+          token,
+          crowdsaleParams.pools[6].address,
+          crowdsaleParams.pools[0].address,
+          saleGoalInWei,
+          crowdsaleParams.tokensPerEthGeneral);
+      });
 
-        it('Buy all tokens', async() => {
-          await testLib.checkBuyAllTokens(crowdsale, token, crowdsaleParams.pools[6].address, crowdsaleParams.pools[0].address, saleGoalInWei, crowdsaleParams.tokensPerEthGeneral);
-        });
-
-        it('Buy tokens and receive change', async() => {
-          await testLib.checkBuyTokensWithChange(crowdsale, token, crowdsaleParams.pools[6].address, crowdsaleParams.pools[0].address, saleGoalInWei, crowdsaleParams.tokensPerEthGeneral);
-        });
+      it('9.4 Buy tokens and receive change', async() => {
+        await testLib.checkBuyTokensWithChange(crowdsale, token, crowdsaleParams.pools[6].address, crowdsaleParams.pools[0].address, saleGoalInWei, crowdsaleParams.tokensPerEthGeneral);
       });
 
       it('10. Can not kill contract after generalSaleEndDate if there are funds on generalSale wallet.', async () => {
-        await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
-        await testLib.killCrowdsaleNegative(crowdsale, token);
+        await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei, token, crowdsaleParams.pools[0].address);
+        await testLib.killCrowdsaleNegative(crowdsale, crowdsaleParams.pools[0].address);
       });
 
       it("11. ICO goal reached: can not kill contract, can withdrawal money, then can kill contract", async() => {
         await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei, token, crowdsaleParams.pools[0].address);
-        await testLib.killCrowdsaleNegative(crowdsale);
+        await testLib.killCrowdsaleNegative(crowdsale, crowdsaleParams.pools[0].address);
         await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
         await testLib.killCrowdsalePositive(crowdsale, token, crowdsaleParams.pools[0].address);
       });
