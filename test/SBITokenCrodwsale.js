@@ -250,14 +250,14 @@ contract('SBITokenCrowdsale', function (accounts) {
 
       it('10. Can not kill contract after generalSaleEndDate if there are funds on generalSale wallet.', async () => {
         await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
-        await testLib.killCrowdsaleNegative(crowdsale);
+        await testLib.killCrowdsaleNegative(crowdsale, token);
       });
 
       it("11. ICO goal reached: can not kill contract, can withdrawal money, then can kill contract", async() => {
-        await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei);
+        await testLib.buyAllTokens(accounts[2], crowdsale, saleGoalInWei, token, crowdsaleParams.pools[0].address);
         await testLib.killCrowdsaleNegative(crowdsale);
         await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
-        await testLib.killCrowdsalePositive(crowdsale);
+        await testLib.killCrowdsalePositive(crowdsale, token, crowdsaleParams.pools[0].address);
       });
     });
 
