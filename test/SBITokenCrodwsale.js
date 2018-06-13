@@ -198,6 +198,44 @@ contract('SBITokenCrowdsale', function (accounts) {
 
     });
 
+    describe('PreICO is opened', async function () {
+
+      beforeEach(async function () {
+        /* contrancts */
+        token = await SBIToken.new({ gas: 7000000 });
+        bank = await SBIBank.new(...bankInitialParams(token));
+        crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
+        owner = await crowdsale.owner();
+        /* sale dates */
+        await token.approveCrowdsale(crowdsale.address);
+        await tokenForWithdrawal.approveCrowdsale(crowdsaleForWithdrawal.address);
+      });
+
+      before(async() => {
+        await testLib.setTestRPCTime(preSaleStartDate + 3600 * 24);
+      });
+
+      // Check that contract is not killable after ICO begins, but before it ends
+      it('7.1. Can not kill contract after preICO started.', async function () {
+        await testLib.checkIcoActive(crowdsale, true);
+        await testLib.killCrowdsaleNegative(crowdsale);
+      });
+
+      it('7.2. ICO should be open', async () => {
+        await testLib.checkIcoActive(crowdsale, true);
+      });
+
+      it('7.3 Buy part of tokens', async() => {
+        await testLib.checkBuyPartOfTokens(crowdsale,
+          token,
+          crowdsaleParams.pools[6].address,
+          crowdsaleParams.pools[0].address,
+          saleGoalInWei,
+          crowdsaleParams.tokensPerEthGeneral);
+      });
+
+    });
+
     describe('Crowdsale is opened', async function () {
 
       before(async() => {
