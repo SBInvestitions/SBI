@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="preICO">
+    <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBIBank.sol" afterPath="$PROJECT_DIR$/contracts/SBIBank.sol" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBIToken.sol" afterPath="$PROJECT_DIR$/contracts/SBIToken.sol" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" afterPath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/testLib.js" afterPath="$PROJECT_DIR$/lib/testLib.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" afterPath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
     </list>
     <ignored path="SBI.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,8 +28,8 @@
       <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="371" column="52" selection-start-line="371" selection-start-column="52" selection-end-line="371" selection-end-column="52" />
+            <state relative-caret-position="5">
+              <caret line="380" column="109" selection-start-line="380" selection-start-column="109" selection-end-line="380" selection-end-column="109" />
               <folding />
             </state>
           </provider>
@@ -336,7 +331,7 @@
       <workItem from="1522939771260" duration="682000" />
       <workItem from="1527622274179" duration="18000" />
       <workItem from="1528526344973" duration="11154000" />
-      <workItem from="1528794072282" duration="11483000" />
+      <workItem from="1528794072282" duration="12102000" />
     </task>
     <task id="LOCAL-00001" summary="contracts first">
       <created>1517854892770</created>
@@ -541,11 +536,18 @@
       <option name="project" value="LOCAL" />
       <updated>1528793466273</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="preICO">
+      <created>1528816091288</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1528816091288</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246043000" />
+    <option name="totallyTimeSpent" value="246662000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -558,9 +560,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="YouTrack" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -951,8 +953,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="371" column="52" selection-start-line="371" selection-start-column="52" selection-end-line="371" selection-end-column="52" />
+        <state relative-caret-position="5">
+          <caret line="380" column="109" selection-start-line="380" selection-start-column="109" selection-end-line="380" selection-end-column="109" />
           <folding />
         </state>
       </provider>
