@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="">
+    <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="preICO">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" afterPath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" afterPath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
     </list>
     <ignored path="SBI.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +28,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5">
-              <caret line="380" column="109" selection-start-line="380" selection-start-column="109" selection-end-line="380" selection-end-column="109" />
+            <state relative-caret-position="344">
+              <caret line="408" column="68" selection-start-line="408" selection-start-column="68" selection-end-line="408" selection-end-column="68" />
               <folding />
             </state>
           </provider>
@@ -58,18 +61,31 @@
       <file leaf-file-name="SBITokenCrodwsale.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
-              <caret line="232" column="27" selection-start-line="232" selection-start-column="27" selection-end-line="232" selection-end-column="27" />
+            <state relative-caret-position="68">
+              <caret line="244" column="66" selection-start-line="244" selection-start-column="66" selection-end-line="244" selection-end-column="66" />
+              <folding>
+                <marker date="1528959473102" expanded="true" signature="4355:4884" ph="/*...*/" />
+                <marker date="1528959473102" expanded="true" signature="4894:6601" ph="/*...*/" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="testrpc.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="14" column="105" selection-start-line="0" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testLib.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="testLib.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/testLib.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="387" column="22" selection-start-line="387" selection-start-column="22" selection-end-line="387" selection-end-column="22" />
+            <state relative-caret-position="17">
+              <caret line="407" column="63" selection-start-line="407" selection-start-column="43" selection-end-line="407" selection-end-column="63" />
               <folding />
             </state>
           </provider>
@@ -112,9 +128,9 @@
         <option value="$PROJECT_DIR$/test/SBIBank.test.js" />
         <option value="$PROJECT_DIR$/contracts/SBIBank.sol" />
         <option value="$PROJECT_DIR$/contracts/SBIToken.sol" />
+        <option value="$PROJECT_DIR$/lib/testLib.js" />
         <option value="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
         <option value="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
-        <option value="$PROJECT_DIR$/lib/testLib.js" />
       </list>
     </option>
   </component>
@@ -203,14 +219,14 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../benrevo-broker-site" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../benrevo-react" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
@@ -331,7 +347,9 @@
       <workItem from="1522939771260" duration="682000" />
       <workItem from="1527622274179" duration="18000" />
       <workItem from="1528526344973" duration="11154000" />
-      <workItem from="1528794072282" duration="12121000" />
+      <workItem from="1528794072282" duration="16356000" />
+      <workItem from="1528956688610" duration="745000" />
+      <workItem from="1528959082756" duration="456000" />
     </task>
     <task id="LOCAL-00001" summary="contracts first">
       <created>1517854892770</created>
@@ -550,11 +568,18 @@
       <option name="project" value="LOCAL" />
       <updated>1528894877178</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="preICO">
+      <created>1528894903655</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1528894903655</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="246681000" />
+    <option name="totallyTimeSpent" value="252117000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -567,26 +592,26 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="YouTrack" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24160346" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24485373" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21018419" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16793066" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -901,7 +926,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="54" selection-start-line="11" selection-start-column="50" selection-end-line="11" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -909,13 +933,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="89" selection-start-line="12" selection-start-column="89" selection-end-line="12" selection-end-column="89" />
         </state>
       </provider>
     </entry>
@@ -942,32 +959,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
+    <entry file="file://$PROJECT_DIR$/test/testrpc.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="232" column="27" selection-start-line="232" selection-start-column="27" selection-end-line="232" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/testLib.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="387" column="22" selection-start-line="387" selection-start-column="22" selection-end-line="387" selection-end-column="22" />
+        <state relative-caret-position="238">
+          <caret line="14" column="105" selection-start-line="0" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5">
-          <caret line="380" column="109" selection-start-line="380" selection-start-column="109" selection-end-line="380" selection-end-column="109" />
+        <state relative-caret-position="344">
+          <caret line="408" column="68" selection-start-line="408" selection-start-column="68" selection-end-line="408" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="244" column="66" selection-start-line="244" selection-start-column="66" selection-end-line="244" selection-end-column="66" />
+          <folding>
+            <marker date="1528959473102" expanded="true" signature="4355:4884" ph="/*...*/" />
+            <marker date="1528959473102" expanded="true" signature="4894:6601" ph="/*...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/testLib.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="407" column="63" selection-start-line="407" selection-start-column="43" selection-end-line="407" selection-end-column="63" />
           <folding />
         </state>
       </provider>
     </entry>
   </component>
   <component name="webServersAuthStorage">
-    <data>AAABIJV5kFPNfchRsrBvyPQAhRULUieh0VhMsPdCDvbJo6+JY0Lt9wR5P+AmIWDv6ZQ4a8SZO6OYmGcZJO9PP837nQ4bnEpbi3TnwkMelFh9i72OshXvQrOINZJPauIV+jiQzDeVXiu7cCNs8Za20GXZDFr9ge051MrZvPRNz1nU0OCW5auVLbNe3grmhYhw2oJnFmkCAPUgh5p5I3pINh1D8H0wPI0S9JeaYT1efwLnmDCx+Jn+cL9tQDp/qNipSBqTxsuGObJU8M8qa5BJq3MTocIeJ9g4316c9/SDkzb0afIDYm1ThWVokNtpMIS8nbIuP0t39Tkvadxvyqsl+3TMH319Qttsr4wnudaN04//bV3wCfm542ELr291JMDrvkuzsVCZscLRwWClJfekWXWWWYY=</data>
+    <data>AAABIKvMS2HqgsDQOEr85dF8p6QqRbtVH2v1UiH6A0Z9VfkUv+SKeziGgjLayQWUUayyAKTnW2xKLZMx1JOd+8cATf5wXgGWzCboC937EdnblxEBvmP7Ww3tMtT213I2tEh+9hmoX4/TvNsrDDCO03u1TnnRtxu7wmtxLh22/BkBBN6e/iieWVfLYdZnzDuI7VpMla65gYfiWMga/ta8usn6nXub/EjfWvJT2scJKyQCW1ParDMu2uHMcpWaGVAPug2J0cGrcX4THhTnxBJ4ieRZCIhYVwjqbgnjzzrTITg5UTRhozxwvAhvztX5jg12I4A25lEhLdHcSjc9Qxlv5l62+LQ6wV1vfu2VuQQkAutscEkNMsa1j9lx414OAqmAujfSZ4g2rmAEnLGcyWxOF9HXbaY=</data>
   </component>
 </project>
