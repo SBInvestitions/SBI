@@ -273,6 +273,9 @@ contract('SBITokenCrowdsale', function (accounts) {
         const contractBalanceFunsBefore = await web3.eth.getBalance(crowdsale.address);
         console.log('contractBalanceFunsBefore = ', contractBalanceFunsBefore.toNumber());
 
+        const senderBalanceFundsBefore = await web3.eth.getBalance(crowdsaleParams.pools[6].address);
+        console.log('senderBalanceFundsBefore = ', senderBalanceFundsBefore.toNumber());
+
         const contractBalanceTokensBefore = await token.balanceOf(crowdsaleParams.pools[0].address);
         console.log('contractBalanceTokensBefore = ', contractBalanceTokensBefore.dividedBy(crowdsaleParams.weiInEth).toNumber());
 
@@ -290,17 +293,23 @@ contract('SBITokenCrowdsale', function (accounts) {
         const contractBalanceFundsAfter = await web3.eth.getBalance(crowdsale.address);
         console.log('contractBalanceFundsAfter = ', contractBalanceFundsAfter.toNumber());
 
+        const senderBalanceFundsAfter = await web3.eth.getBalance(crowdsaleParams.pools[6].address);
+        console.log('senderBalanceFundsAfter = ', senderBalanceFundsAfter.toNumber());
+
         const contractBalanceTokensAfter = await token.balanceOf(crowdsaleParams.pools[0].address);
         console.log('contractBalanceTokensAfter = ', contractBalanceTokensAfter.dividedBy(crowdsaleParams.weiInEth).toNumber());
 
         const senderBalanceTokensAfter = await token.balanceOf(crowdsaleParams.pools[6].address);
         console.log('senderBalanceTokensAfter = ', senderBalanceTokensAfter.dividedBy(crowdsaleParams.weiInEth).toNumber());
 
-        const diff = contractBalanceFundsAfter.minus(contractBalanceFunsBefore).toNumber();
-        console.log('diff', diff);
+        const diff = contractBalanceFundsAfter.minus(contractBalanceFunsBefore);
+        console.log('diff', diff.toNumber());
 
         const tokenDiff = contractBalanceTokensBefore.minus(contractBalanceTokensAfter).dividedBy(crowdsaleParams.weiInEth).toNumber();
         console.log('tokenDiff', tokenDiff);
+
+        const senderFundDiff = senderBalanceFundsBefore.minus(senderBalanceFundsAfter).dividedBy(crowdsaleParams.weiInEth).toNumber();
+        console.log('senderFundDiff', senderFundDiff);
 
         contractBalanceFundsAfter.should.be.bignumber.equal(diff);
       });
