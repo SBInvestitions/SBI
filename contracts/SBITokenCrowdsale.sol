@@ -369,24 +369,34 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         // Fund transfer event
         FundTransfer(investorAddress, address(this), amount);
         uint remainingTokenBalance = token.balanceOf(saleWalletAddress) / tokenMultiplier;
+
         // Calculate token amount that is purchased,
         // truncate to integer
+
         uint tokensRate = 0;
         uint tokenAmount = 0;
         uint acceptedAmount = 0;
-        uint preIcoAcceptedAmount = preSaleAmount / tokensPerEth;
+
+        // uint acceptedAmount = tokenAmount * 1e18 / tokensPerEth;
+
         if (preSaleStartDate <= now && now <= preSaleEndDate && remainingTokenBalance > 17000000) {
           tokensRate = preicoTokensPerEth;
-          if (preIcoAcceptedAmount < amount) {
-            tokenAmount = preSaleAmount + ((amount / tokenMultiplier) - preIcoAcceptedAmount) * tokensPerEth;
+          uint discountTokens = remainingTokenBalance - 17000000;
+
+          uint acceptedPreicoAmount = discountTokens * 1e18 / preicoTokensPerEth; // 212
+          uint acceptedMainAmount = 17000000 * 1e18 / tokensPerEth; // 1619
+          acceptedAmount = acceptedPreicoAmount + acceptedMainAmount;
+
+          if (acceptedPreicoAmount < amount) {
+            tokenAmount = discountTokens + (amount - acceptedPreicoAmount) / 1e18 * tokensPerEth;
           } else {
-            tokenAmount = preicoTokensPerEth * amount / tokenMultiplier;
+            tokenAmount = preicoTokensPerEth * amount / 1e18;
           }
-          acceptedAmount = (remainingTokenBalance - 17000000) * preicoTokensPerEth + 17000000 * tokensPerEth;
+
         } else {
           tokensRate = tokensPerEth;
-          tokenAmount = amount * tokensPerEth / tokenMultiplier;
-          acceptedAmount = remainingTokenBalance * tokensPerEth;
+          tokenAmount = amount * tokensPerEth / 1e18;
+          acceptedAmount = remainingTokenBalance * tokensPerEth * 1e18;
         }
 
         // Check that stage wallet has enough tokens. If not, sell the rest and
@@ -401,10 +411,13 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         TokenSale(investorAddress, amount, tokenAmount, tokensRate);
 
         // Return change
-        uint change = amount - acceptedAmount;
-        if (change > 0) {
+        if (amount > acceptedAmount) {
+            uint change = amount - acceptedAmount;
             investorAddress.transfer(change);
             FundTransfer(address(this), investorAddress, change);
+                        TokenSale(investorAddress, amount, tokenAmount, change);
+                        TokenSale(investorAddress, amount, tokenAmount, amount);
+                        TokenSale(investorAddress, amount, tokenAmount, acceptedAmount);
         }
 
         // Update crowdsale performance
