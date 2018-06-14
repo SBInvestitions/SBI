@@ -376,17 +376,20 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
         uint tokensRate = 0;
         uint tokenAmount = 0;
         uint acceptedAmount = 0;
+        uint mainTokens = 0;
+        uint discountTokens = 0;
 
         if (preSaleStartDate <= now && now <= preSaleEndDate && remainingTokenBalance > 17000000) {
           tokensRate = preicoTokensPerEth;
-          uint discountTokens = remainingTokenBalance - 17000000;
+          discountTokens = remainingTokenBalance - 17000000;
 
           uint acceptedPreicoAmount = discountTokens * 1e18 / preicoTokensPerEth; // 212
           uint acceptedMainAmount = 17000000 * 1e18 / tokensPerEth; // 1619
           acceptedAmount = acceptedPreicoAmount + acceptedMainAmount;
 
           if (acceptedPreicoAmount < amount) {
-            tokenAmount = discountTokens + (amount - acceptedPreicoAmount) / 1e18 * tokensPerEth;
+            mainTokens = (amount - acceptedPreicoAmount) * tokensPerEth / 1e18;
+            tokenAmount = discountTokens + mainTokens;
           } else {
             tokenAmount = preicoTokensPerEth * amount / 1e18;
           }
@@ -413,10 +416,15 @@ contract SBITokenCrowdsale is Owned, CrowdsaleParameters {
             uint change = amount - acceptedAmount;
             investorAddress.transfer(change);
             FundTransfer(address(this), investorAddress, change);
-                        TokenSale(investorAddress, amount, tokenAmount, change);
-                        TokenSale(investorAddress, amount, tokenAmount, amount);
-                        TokenSale(investorAddress, amount, tokenAmount, acceptedAmount);
         }
+
+        TokenSale(investorAddress, amount, tokenAmount, discountTokens);
+        TokenSale(investorAddress, amount, tokenAmount, mainTokens);
+        TokenSale(investorAddress, amount, tokenAmount, acceptedPreicoAmount);
+        TokenSale(investorAddress, amount, tokenAmount, remainingTokenBalance);
+        TokenSale(investorAddress, amount, tokenAmount, amount);
+        TokenSale(investorAddress, amount, tokenAmount, acceptedAmount);
+        TokenSale(investorAddress, amount, tokenAmount, tokenAmount);
 
         // Update crowdsale performance
         investmentRecords[investorAddress] += acceptedAmount;

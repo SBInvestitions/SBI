@@ -265,7 +265,7 @@ contract('SBITokenCrowdsale', function (accounts) {
         contractBalanceFundsAfter.should.be.bignumber.equal(diff);
       });
 
-      it('7.4 Buy part of tokens bigger', async() => {
+      /* it('7.4 Buy part of tokens bigger', async() => {
         const gasPrice = 100000;
         const gasLimit = 30e9;
         console.log('saleGoalInWei', saleGoalInWei);
@@ -313,22 +313,72 @@ contract('SBITokenCrowdsale', function (accounts) {
 
         contractBalanceFundsAfter.should.be.bignumber.equal(diff);
       });
+    }); */
+
+    it('7.5 Buy part of tokens more than preICO', async() => {
+      const gasPrice = 100000;
+      const gasLimit = 30e9;
+      console.log('saleGoalInWei', saleGoalInWei);
+
+      const contractBalanceFunsBefore = await web3.eth.getBalance(crowdsale.address);
+      console.log('contractBalanceFunsBefore = ', contractBalanceFunsBefore.toNumber());
+
+      const senderBalanceFundsBefore = await web3.eth.getBalance(crowdsaleParams.pools[6].address);
+      console.log('senderBalanceFundsBefore = ', senderBalanceFundsBefore.toNumber());
+
+      const contractBalanceTokensBefore = await token.balanceOf(crowdsaleParams.pools[0].address);
+      console.log('contractBalanceTokensBefore = ', contractBalanceTokensBefore.dividedBy(crowdsaleParams.weiInEth).toNumber());
+
+      const senderBalanceTokensBefore = await token.balanceOf(crowdsaleParams.pools[6].address);
+      console.log('senderBalanceTokensBefore = ', senderBalanceTokensBefore.toNumber());
+
+      await crowdsale.sendTransaction({
+        from: crowdsaleParams.pools[6].address,
+        to: crowdsale.address,
+        value: new BigNumber(214).times(crowdsaleParams.weiInEth),
+        gasLimit: gasLimit,
+        gasPrice: gasPrice
+      });
+
+      const contractBalanceFundsAfter = await web3.eth.getBalance(crowdsale.address);
+      console.log('contractBalanceFundsAfter = ', contractBalanceFundsAfter.toNumber());
+
+      const senderBalanceFundsAfter = await web3.eth.getBalance(crowdsaleParams.pools[6].address);
+      console.log('senderBalanceFundsAfter = ', senderBalanceFundsAfter.toNumber());
+
+      const contractBalanceTokensAfter = await token.balanceOf(crowdsaleParams.pools[0].address);
+      console.log('contractBalanceTokensAfter = ', contractBalanceTokensAfter.dividedBy(crowdsaleParams.weiInEth).toNumber());
+
+      const senderBalanceTokensAfter = await token.balanceOf(crowdsaleParams.pools[6].address);
+      console.log('senderBalanceTokensAfter = ', senderBalanceTokensAfter.dividedBy(crowdsaleParams.weiInEth).toNumber());
+
+      const diff = contractBalanceFundsAfter.minus(contractBalanceFunsBefore);
+      console.log('contractBalanceFundsDiff', diff.dividedBy(crowdsaleParams.weiInEth).toNumber());
+
+      const tokenDiff = contractBalanceTokensBefore.minus(contractBalanceTokensAfter).dividedBy(crowdsaleParams.weiInEth).toNumber();
+      console.log('tokenDiff', tokenDiff);
+
+      const senderFundDiff = senderBalanceFundsBefore.minus(senderBalanceFundsAfter).dividedBy(crowdsaleParams.weiInEth).toNumber();
+      console.log('senderFundDiff', senderFundDiff);
+
+      contractBalanceFundsAfter.should.be.bignumber.equal(diff);
     });
+  });
 
 
-    /*describe('Crowdsale is opened', async function () {
+    describe('Crowdsale is opened', async function () {
 
       before(async() => {
         await testLib.setTestRPCTime(generalSaleStartDate + 3600 * 24);
       });
 
       beforeEach(async function () {
-        /!* contrancts *!/
+        /* contrancts */
         token = await SBIToken.new({gas: 7000000});
         bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
-        /!* sale dates *!/
+        /* sale dates */
         await token.approveCrowdsale(crowdsale.address);
         await tokenForWithdrawal.approveCrowdsale(crowdsaleForWithdrawal.address);
       });
@@ -380,16 +430,16 @@ contract('SBITokenCrowdsale', function (accounts) {
         await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
         await testLib.killCrowdsalePositive(crowdsale, token, crowdsaleParams.pools[0].address);
       });
-    });*/
+    });
 
-    /*describe('> crowdsale end date', async () => {
+    describe('> crowdsale end date', async () => {
 
       before(async() => {
         await testLib.setTestRPCTime(generalSaleEndDate + 3600 * 24);
       });
 
       beforeEach(async function () {
-        /!* contrancts *!/
+        /* contrancts */
         token = await SBIToken.new({gas: 7000000});
         bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
@@ -408,7 +458,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       it('14 Only owner can kill contract', async() => {
         await testLib.killCrowdsaleNegative(crowdsale, accounts[2]);
       });
-    });*/
+    });
   });
 });
 
