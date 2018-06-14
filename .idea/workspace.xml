@@ -4,7 +4,6 @@
     <list default="true" id="fcc2b1a5-06de-4cd3-8ba9-33ade202d8d7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" afterPath="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" afterPath="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
     </list>
     <ignored path="SBI.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,10 +26,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SBITokenCrowdsale.sol" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10">
+            <state relative-caret-position="7055">
               <caret line="415" column="50" selection-start-line="415" selection-start-column="50" selection-end-line="415" selection-end-column="50" />
               <folding />
             </state>
@@ -57,11 +56,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SBITokenCrodwsale.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SBITokenCrodwsale.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="350" column="0" selection-start-line="350" selection-start-column="0" selection-end-line="350" selection-end-column="0" />
+            <state relative-caret-position="3368">
+              <caret line="363" column="62" selection-start-line="363" selection-start-column="58" selection-end-line="363" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -126,8 +125,8 @@
         <option value="$PROJECT_DIR$/contracts/SBIToken.sol" />
         <option value="$PROJECT_DIR$/lib/testLib.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
         <option value="$PROJECT_DIR$/test/SBITokenCrodwsale.js" />
+        <option value="$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol" />
       </list>
     </option>
   </component>
@@ -347,7 +346,7 @@
       <workItem from="1528794072282" duration="16356000" />
       <workItem from="1528956688610" duration="745000" />
       <workItem from="1528959082756" duration="585000" />
-      <workItem from="1528960080561" duration="6860000" />
+      <workItem from="1528960080561" duration="8680000" />
     </task>
     <task id="LOCAL-00001" summary="contracts first">
       <created>1517854892770</created>
@@ -594,11 +593,18 @@
       <option name="project" value="LOCAL" />
       <updated>1528962422086</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="preICO with tests">
+      <created>1528974372679</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1528974372680</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="259106000" />
+    <option name="totallyTimeSpent" value="260926000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -694,7 +700,8 @@
     <MESSAGE value="new test" />
     <MESSAGE value="prod" />
     <MESSAGE value="preICO" />
-    <option name="LAST_COMMIT_MESSAGE" value="preICO" />
+    <MESSAGE value="preICO with tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="preICO with tests" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -995,18 +1002,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
+    <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10">
-          <caret line="415" column="50" selection-start-line="415" selection-start-column="50" selection-end-line="415" selection-end-column="50" />
+        <state relative-caret-position="3368">
+          <caret line="363" column="62" selection-start-line="363" selection-start-column="58" selection-end-line="363" selection-end-column="62" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/SBITokenCrodwsale.js">
+    <entry file="file://$PROJECT_DIR$/contracts/SBITokenCrowdsale.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="350" column="0" selection-start-line="350" selection-start-column="0" selection-end-line="350" selection-end-column="0" />
+        <state relative-caret-position="7055">
+          <caret line="415" column="50" selection-start-line="415" selection-start-column="50" selection-end-line="415" selection-end-column="50" />
           <folding />
         </state>
       </provider>
