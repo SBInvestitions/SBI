@@ -211,9 +211,9 @@ contract('SBITokenCrowdsale', function (accounts) {
         await tokenForWithdrawal.approveCrowdsale(crowdsaleForWithdrawal.address);
       });
 
-      before(async() => {
+      /* before(async() => {
         await testLib.setTestRPCTime(preSaleStartDate + 3600 * 24);
-      });
+      }); */
 
       // Check that contract is not killable after ICO begins, but before it ends
       it('7.1. Can not kill contract after preICO started.', async function () {
@@ -226,8 +226,8 @@ contract('SBITokenCrowdsale', function (accounts) {
       });
 
       it('7.3 Buy part of tokens', async() => {
-        const gasPrice = 100000;
-        const gasLimit = 30e9;
+        const gasPrice = 1;
+        const gasLimit = 4660000;
         console.log('saleGoalInWei', saleGoalInWei);
 
         const contractBalanceFunsBefore = await web3.eth.getBalance(crowdsale.address);
@@ -239,13 +239,14 @@ contract('SBITokenCrowdsale', function (accounts) {
         const senderBalanceTokensBefore = await token.balanceOf(crowdsaleParams.pools[6].address);
         console.log('senderBalanceTokensBefore = ', senderBalanceTokensBefore.toNumber());
 
-        await crowdsale.sendTransaction({
+        const transaction = await crowdsale.sendTransaction({
           from: crowdsaleParams.pools[6].address,
           to: crowdsale.address,
-          value: new BigNumber(1).times(crowdsaleParams.weiInEth),
+          value: new BigNumber(0.01).times(crowdsaleParams.weiInEth),
           gasLimit: gasLimit,
           gasPrice: gasPrice
         });
+        console.log('TRANSACTION', transaction);
 
         const contractBalanceFundsAfter = await web3.eth.getBalance(crowdsale.address);
         console.log('contractBalanceFundsAfter = ', contractBalanceFundsAfter.toNumber());
@@ -315,7 +316,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       });
     }); */
 
-    it('7.5 Buy part of tokens more than preICO', async() => {
+    /* it('7.5 Buy part of tokens more than preICO', async() => {
       const gasPrice = 100000;
       const gasLimit = 30e9;
       console.log('saleGoalInWei', saleGoalInWei);
@@ -362,23 +363,23 @@ contract('SBITokenCrowdsale', function (accounts) {
       console.log('senderFundDiff', senderFundDiff);
 
       contractBalanceFundsAfter.should.be.bignumber.equal(diff);
-    });
+    }); */
   });
 
 
-    describe('Crowdsale is opened', async function () {
+    /*describe('Crowdsale is opened', async function () {
 
       before(async() => {
         await testLib.setTestRPCTime(generalSaleStartDate + 3600 * 24);
       });
 
       beforeEach(async function () {
-        /* contrancts */
+        /!* contrancts *!/
         token = await SBIToken.new({gas: 7000000});
         bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
-        /* sale dates */
+        /!* sale dates *!/
         await token.approveCrowdsale(crowdsale.address);
         await tokenForWithdrawal.approveCrowdsale(crowdsaleForWithdrawal.address);
       });
@@ -430,16 +431,16 @@ contract('SBITokenCrowdsale', function (accounts) {
         await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
         await testLib.killCrowdsalePositive(crowdsale, token, crowdsaleParams.pools[0].address);
       });
-    });
+    });*/
 
-    describe('> crowdsale end date', async () => {
+    /*describe('> crowdsale end date', async () => {
 
       before(async() => {
         await testLib.setTestRPCTime(generalSaleEndDate + 3600 * 24);
       });
 
       beforeEach(async function () {
-        /* contrancts */
+        /!* contrancts *!/
         token = await SBIToken.new({gas: 7000000});
         bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
@@ -458,7 +459,7 @@ contract('SBITokenCrowdsale', function (accounts) {
       it('14 Only owner can kill contract', async() => {
         await testLib.killCrowdsaleNegative(crowdsale, accounts[2]);
       });
-    });
+    });*/
   });
 });
 
