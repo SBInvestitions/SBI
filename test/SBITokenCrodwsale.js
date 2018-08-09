@@ -134,28 +134,28 @@ contract('SBITokenCrowdsale', function (accounts) {
 
   describe('Actual values tests', async () => {
 
-    before(async() => {
+    /*before(async() => {
       // To check correct withdrawal we need to have crawsdale contract instance across different tests
       tokenForWithdrawal = await SBIToken.new({gas: 7000000});
       bankForWithdrawal = await SBIBank.new(...bankInitialParams(tokenForWithdrawal));
       crowdsaleForWithdrawal = await SBITokenCrowdsale.new(...crowdSaleInitialParams(tokenForWithdrawal, bankForWithdrawal));
-    });
+    });*/
 
     // TestRPC should have current time before generalSaleStartDate
-    /*describe('Before generalSaleStartDate', async function () {
+    describe('Before generalSaleStartDate', async function () {
 
       beforeEach(async function () {
-        /!* contrancts *!/
+        /* contrancts */
         token = await SBIToken.new({gas: 7000000});
         bank =  await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
       });
 
-      it('0. Can kill contract before ico start date', async function() {
+      /*it('0. Can kill contract before ico start date', async function() {
         await testLib.killCrowdsalePositive(crowdsale);
-      });
-    });*/
+      });*/
+    });
 
     /*describe('Initial parameters and ownership', async function () {
 
@@ -198,22 +198,22 @@ contract('SBITokenCrowdsale', function (accounts) {
 
     });*/
 
-    describe('PreICO is opened', async function () {
+    /*describe('PreICO is opened', async function () {
 
       beforeEach(async function () {
-        /* contrancts */
+        /!* contrancts *!/
         token = await SBIToken.new({ gas: 7000000 });
         bank = await SBIBank.new(...bankInitialParams(token));
         crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
         owner = await crowdsale.owner();
-        /* sale dates */
+        /!* sale dates *!/
         await token.approveCrowdsale(crowdsale.address);
         await tokenForWithdrawal.approveCrowdsale(crowdsaleForWithdrawal.address);
       });
 
-      /* before(async() => {
+      /!* before(async() => {
         await testLib.setTestRPCTime(preSaleStartDate + 3600 * 24);
-      }); */
+      }); *!/
 
       // Check that contract is not killable after ICO begins, but before it ends
       it('7.1. Can not kill contract after preICO started.', async function () {
@@ -266,7 +266,7 @@ contract('SBITokenCrowdsale', function (accounts) {
         contractBalanceFundsAfter.should.be.bignumber.equal(diff);
       });
 
-      /* it('7.4 Buy part of tokens bigger', async() => {
+      /!* it('7.4 Buy part of tokens bigger', async() => {
         const gasPrice = 100000;
         const gasLimit = 30e9;
         console.log('saleGoalInWei', saleGoalInWei);
@@ -314,9 +314,9 @@ contract('SBITokenCrowdsale', function (accounts) {
 
         contractBalanceFundsAfter.should.be.bignumber.equal(diff);
       });
-    }); */
+    }); *!/
 
-    /* it('7.5 Buy part of tokens more than preICO', async() => {
+    /!* it('7.5 Buy part of tokens more than preICO', async() => {
       const gasPrice = 100000;
       const gasLimit = 30e9;
       console.log('saleGoalInWei', saleGoalInWei);
@@ -363,8 +363,86 @@ contract('SBITokenCrowdsale', function (accounts) {
       console.log('senderFundDiff', senderFundDiff);
 
       contractBalanceFundsAfter.should.be.bignumber.equal(diff);
-    }); */
-  });
+    }); *!/
+  });*/
+
+    describe('Crowdsale is opened, try to safeWithdraw', async function () {
+
+      before(async() => {
+        await testLib.setTestRPCTime(generalSaleStartDate + 3600 * 24);
+        /* contrancts */
+        token = await SBIToken.new({gas: 7000000});
+        bank = await SBIBank.new(...bankInitialParams(token));
+        crowdsale = await SBITokenCrowdsale.new(...crowdSaleInitialParams(token, bank));
+        owner = await crowdsale.owner();
+        /* sale dates */
+        await token.approveCrowdsale(crowdsale.address);
+      });
+
+      it('100. Buy part of tokens', async() => {
+        /*await testLib.checkBuyPartOfTokens(crowdsale,
+          token,
+          crowdsaleParams.pools[6].address,
+          crowdsaleParams.pools[0].address,
+          saleGoalInWei,
+          crowdsaleParams.tokensPerEthGeneral);*/
+
+        const gasPrice = 100000;
+        const gasLimit = 30e9;
+        const sender = crowdsaleParams.pools[6].address;
+        const generalSaleWalletAddress = crowdsaleParams.pools[0].address;
+
+        const senderBalanceETHBefore = await web3.eth.getBalance(sender);
+        const senderBalanceTokensBefore = await token.balanceOf(sender);
+        const contractBalanceETHBefore = await web3.eth.getBalance(crowdsale.address);
+        const contractBalanceTokensBefore = await token.balanceOf(generalSaleWalletAddress);
+        const amountInWei =  new BigNumber(0.029).times(crowdsaleParams.weiInEth);
+        const amountToBuyInTokens = new BigNumber(amountInWei).times(crowdsaleParams.tokensPerEthGeneral);
+        // const expectedTokensAmount = 48000 * amountInWei;
+        await crowdsale.sendTransaction({ from: sender, to: crowdsale.address, value: amountInWei, gasLimit: gasLimit, gasPrice: gasPrice });
+
+        const senderETHDiff = (senderBalanceETHBefore).minus(await web3.eth.getBalance(sender)).minus(testLib.getLatestBlockCost(gasPrice));
+        const senderTokensDiff = (await token.balanceOf(sender)).minus(senderBalanceTokensBefore);
+        const contractETHDiff = (await web3.eth.getBalance(crowdsale.address)).minus(contractBalanceETHBefore);
+        const contractTokensDiff = (contractBalanceTokensBefore).minus(await token.balanceOf(generalSaleWalletAddress));
+
+        console.log('senderETHDiff = ', senderETHDiff.toNumber());
+        console.log('contractETHDiff = ', contractETHDiff.toNumber());
+        console.log('senderTokensDiff = ', senderTokensDiff.toNumber());
+        console.log('contractTokensDiff = ', contractTokensDiff.toNumber());
+        console.log('amountInWei', amountInWei.toNumber());
+        console.log('amountToBuyInTokens', amountToBuyInTokens.toNumber());
+
+        senderETHDiff.should.be.bignumber.equal(new BigNumber(amountInWei));
+        contractETHDiff.should.be.bignumber.equal(new BigNumber(amountInWei));
+        senderTokensDiff.should.be.bignumber.equal(new BigNumber(amountToBuyInTokens));
+        contractTokensDiff.should.be.bignumber.equal(new BigNumber(amountToBuyInTokens));
+      });
+
+      it('101. Safe withdraw', async() => {
+        const gasPrice = 100000;
+
+        const contractBalanceFunsBefore = await web3.eth.getBalance(crowdsale.address);
+        console.log('contractBalanceFunsBefore = ', contractBalanceFunsBefore.toNumber());
+
+        const bankBalanceFunsBefore = await web3.eth.getBalance(bank.address);
+        console.log('bankBalanceFunsBefore = ', bankBalanceFunsBefore.toNumber());
+
+        await testLib.checkWithdrawalIsAllowed(crowdsale, owner, bank);
+
+        const contractBalanceFunsAfter = await web3.eth.getBalance(crowdsale.address);
+        console.log('contractBalanceFundsAfter = ', contractBalanceFunsAfter.toNumber());
+
+        const bankBalanceFunsAfter = await web3.eth.getBalance(bank.address);
+
+        console.log('bankBalanceFunsAfter = ', bankBalanceFunsAfter.toNumber());
+        contractBalanceFunsAfter.should.be.bignumber.equal(0);
+        console.log('bankBalanceFundsBefore = ', contractBalanceFunsAfter.toNumber());
+
+        console.log('testLib.getLatestBlockCost(gasPrice)', testLib.getLatestBlockCost(gasPrice));
+        contractBalanceFunsAfter.should.be.bignumber.equal(0);
+      })
+    });
 
 
     /*describe('Crowdsale is opened', async function () {
